@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="add_bank_charges_account_payment_form_view_14" model="ir.ui.view">
+        <field name="model">account.payment.register</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//label[@for='amount']" position="replace">
+                <label for="full_amount" attrs="{'invisible': ['|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='amount']" position="replace">
+                <field name="full_amount"/>
+            </xpath>
+            <xpath expr="//field[@name='payment_date']" position="before">
+                <label for="amount" string="amount after bc." attrs="{'invisible': ['|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}"/>
+                <div name="amount_div" class="o_row" attrs="{'invisible': ['|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}">
+                    <field name="amount" readonly="1" force_save="1"/>
+                    <field name="currency_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_currency"/>
+                </div>
+                <field name="bank_charges" force_save="1" readonly="1" />
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="add_bank_charges_account_payment_form_view_payment_14" model="ir.ui.view">
+        <field name="model">account.payment</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="account.view_account_payment_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//label[@for='amount']" position="replace">
+                <label for="full_amount"/>
+            </xpath>
+            <xpath expr="//field[@name='amount']" position="replace">
+                <field name="full_amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+            </xpath>
+            <xpath expr="//field[@name='date']" position="before">
+                <label for="amount" string="amount after bc."/>
+                <div name="amount_div" class="o_row">
+                    <field name="amount" readonly="1" force_save="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="currency_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}" groups="base.group_multi_currency"/>
+                </div>
+                <field name="bank_charges" readonly="1" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

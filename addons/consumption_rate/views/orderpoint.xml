@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model='ir.ui.view' id='inherit_view_warehouse_orderpoint_tree_editable'>
+            <field name="model">stock.warehouse.orderpoint</field>
+            <field name="inherit_id" ref="stock.view_warehouse_orderpoint_tree_editable" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_min_qty']" position="before">
+                    <field name="start_date" optional="hide"/>
+                    <field name="end_date" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="stock_warehouse_orderpoint_py_batch" model="ir.ui.view">
+            <field name="name">stock.warehouse.orderpoint.add.py_batch.num</field>
+            <field name="model">stock.warehouse.orderpoint</field>
+            <field name="inherit_id" ref="stock.view_warehouse_orderpoint_tree_editable"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='location_id']" position="before">
+                    <field name="py_batch" groups="stock.group_stock_manager"/>
+                </xpath>
+                <xpath expr="//field[@name='location_id']" position="attributes">
+                    <attribute name="groups">stock.group_stock_manager</attribute>
+                </xpath>
+                <xpath expr="//field[@name='warehouse_id']" position="attributes">
+                    <attribute name="groups">stock.group_stock_manager</attribute>
+                </xpath>
+                <xpath expr="//field[@name='trigger']" position="attributes">
+                    <attribute name="groups">stock.group_stock_manager</attribute>
+                </xpath>
+                <xpath expr="//field[@name='qty_multiple']" position="attributes">
+                    <attribute name="groups">stock.group_stock_manager</attribute>
+                </xpath>
+                <xpath expr="//field[@name='route_id']" position="attributes">
+                    <attribute name="groups">stock.group_stock_manager</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_min_qty']" position="attributes">
+                    <attribute name="groups">stock.group_stock_manager</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_max_qty']" position="attributes">
+                    <attribute name="groups">stock.group_stock_manager</attribute>
+                </xpath>
+            </field>
+        </record>
+        
+        <record model='ir.ui.view' id='stock_reorder_report_search_to_order'>
+            <field name="model">stock.warehouse.orderpoint</field>
+            <field name="inherit_id" ref="stock.stock_reorder_report_search" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="py_batch"/>
+                </xpath>
+                <xpath expr="//filter[@name='groupby_warehouse']" position="before">
+                    <filter string="Reorder Batch" name="groupby_py_batch" domain="[]" context="{'group_by': 'py_batch'}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

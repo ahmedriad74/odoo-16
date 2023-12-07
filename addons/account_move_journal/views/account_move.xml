@@ -1,0 +1,25 @@
+<odoo>
+    <data>
+        <record id="add_invoice_date_time_view_invoice_tree_inherit" model="ir.ui.view">
+            <field name="name">add.invoice.date.time.view.invoice.tree.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_invoice_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_date'][2]" position="after">
+                    <field name='ro_invoice_time'/>
+                </xpath>
+            </field>
+        </record>        
+
+        <record id="add_invoice_date_time_view_move_form_inherit" model="ir.ui.view">
+            <field name="name">add.invoice.date.time.view.invoice.form.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_date']" position="after">
+                    <field name='ro_invoice_time' readonly="1"/>
+                </xpath>
+            </field>
+        </record>        
+    </data>
+</odoo>

@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <record id="view_stock_inventory_form_emp" model="ir.ui.view">
+            <field name="model">stock.inventory</field>
+            <field name="inherit_id" ref="stock.view_inventory_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='prefill_counted_quantity']" position="after">
+                    <field name='adj_employee_id' force_save="1" required='1'
+                    options="{'no_create':True, 'no_create_edit': True, 'no_open': True}"/>
+                    <field name='barcode' required='1' password="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

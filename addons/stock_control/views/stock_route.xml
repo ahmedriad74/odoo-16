@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <record id="stock_location_route_form_view_used" model="ir.ui.view">
+            <field name="model">stock.route</field>
+            <field name="inherit_id" ref="stock.stock_location_route_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='sequence']" position="after">
+                    <field name="used_warehouse_id"/>
+                    <field name="py_is_buy_route"/>
+                    <field name="py_is_reorder_route"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

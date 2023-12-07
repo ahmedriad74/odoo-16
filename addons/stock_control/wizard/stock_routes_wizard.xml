@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+        <record id="stock_routes_wizard_form" model="ir.ui.view">
+            <field name="name">stock.routes.wizard.form</field>
+            <field name="model">stock.routes.wizard</field>
+            <field name="arch" type="xml">
+                <form >
+                    <p class="text-center">
+                        <field name="message" readonly="1"/>
+                        <field name="route_line_ids" >
+                            <tree editable="bottom" create="false" edit="false" >
+                                <field name="sequence" invisible="1"/>
+                                <field name="sequence" widget="handle"/>
+                                <field name="route_id" readonly="1" force_save="1"/>
+                                <field name="available" readonly="1" force_save="1"/>
+                                <field name="to_order"/>
+                            </tree>
+                        </field>
+                    </p>
+                    <p style="text-align: right;"><label for="edit_qty"/><field name="edit_qty"/></p>
+                <footer>
+                    <button name="action_create" string="Create" type="object" default_focus="1" class="oe_highlight"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+              </form>
+            </field>
+        </record>
+    </data>
+</odoo>

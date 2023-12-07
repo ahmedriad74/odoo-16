@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_upload_workhrs_sheet_wizard_wizard" model="ir.ui.view">
+        <field name="name">view.upload.workhrs.sheet.wizard</field>
+        <field name="model">upload.workhrs.sheet.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import">
+                <field name="binary_file"/>
+                <footer>
+                    <!-- <button name="action_upload" string="Upload" type="object" class="btn-primary"/> -->
+                    <button name="action_upload_data" string="Upload Data" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_upload_workhrs_sheet_wizard" model="ir.actions.act_window">
+        <field name="res_model">upload.workhrs.sheet.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_upload_workhrs_sheet_wizard_wizard"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

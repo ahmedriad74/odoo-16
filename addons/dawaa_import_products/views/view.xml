@@ -1,0 +1,9 @@
+<odoo>
+  <data>
+      <menuitem id="import_products" 
+              name="Import Products" 
+              parent="stock.menu_stock_root" 
+              action="action_view_import_products_wizard" 
+              sequence="20"/>
+  </data>
+</odoo>

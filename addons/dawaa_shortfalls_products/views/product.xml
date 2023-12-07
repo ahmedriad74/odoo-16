@@ -1,0 +1,15 @@
+<odoo>
+  <data>
+      <record id="dawaa_shortfall_products_product_template_form_view_inherit" model="ir.ui.view">
+          <field name="name">dawaa.shortfall.products.product.template.form.view.inherit</field>
+          <field name="model">product.template</field>
+          <field name="inherit_id" ref="product.product_template_form_view"/>
+          <field name="arch" type="xml">
+              <xpath expr="//group[@name='group_standard_price']" position="inside">
+                  <field name="is_shortfall"/>
+                  <field name="is_cosmo_shortfall"/>
+              </xpath>
+          </field>
+      </record>
+  </data>
+</odoo>

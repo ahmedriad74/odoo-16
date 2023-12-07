@@ -1,0 +1,14 @@
+<odoo>
+  <data>
+    <record id="view_sale_form_parent_cash_back_inherit" model="ir.ui.view">
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="customer_cash_back_amount" readonly="1"/>
+                <field name="customer_got_offer"/>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>

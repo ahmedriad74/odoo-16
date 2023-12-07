@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+sale.access_product_template_sale_user,product.template sale use,sale.model_product_template,sales_team.group_sale_salesman,1,1,0,0

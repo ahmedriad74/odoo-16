@@ -1,0 +1,33 @@
+<odoo>
+    <data>
+        <record id="vpicktree_tree_delivery" model="ir.ui.view">
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name='area'  invisible="1"/>
+                    <field name='delivery_employee_id' optional="show" options='{"no_create":True, "no_create_edit": True, "no_open": True}'/>
+                </xpath>
+                <xpath expr="//button[@name='action_assign']" position="before">
+                    <button name="py_assign_delivery" type="object" string="Assign Delivery"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_picking_form_deliver_inherit" model="ir.ui.view">
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[1]/group[1]" position="inside">
+                    <field name='area' invisible="1"/>
+                    <field name='order_wd' invisible="1"/>
+                    <field name='delivery_employee_id' force_save="1" 
+                        options='{"no_create":True, "no_create_edit": True, "no_open": True}'
+                        attrs="{'invisible':[('picking_type_code','!=','internal'),('order_wd','!=','delivery')]}"/>
+                    <field name='delivery_barcode' password="1" force_save="1" attrs="{'invisible':[('picking_type_code','!=','internal'),('order_wd','!=','delivery')],'readonly':[('state','not in',('draft', 'assigned'))]}"/>
+                    <field name='processing_employee' attrs="{'readonly':[('state','!=','assigned')]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

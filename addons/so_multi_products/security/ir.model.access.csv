@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+product.access_product_product_manager,product.product manager,model_product_product,base.group_system,1,0,0,0
+purchase.access_product_product_purchase_manager,product.product purchase_manager,product.model_product_product,purchase.group_purchase_manager,1,0,0,0
+stock.access_product_product_stock_manager,product.product stock_manager,product.model_product_product,stock.group_stock_manager,1,0,0,0
+account.access_product_product_account_manager,product.product.account.manager,product.model_product_product,account.group_account_manager,1,0,0,0
+hr_expense.access_product_product_hr_expense_user,product.product.hr.expense.user,product.model_product_product,hr_expense.group_hr_expense_manager,1,0,0,0
+point_of_sale.access_product_product_pos_manager,product.product.pos manager,product.model_product_product,point_of_sale.group_pos_manager,1,0,0,0
+dawaa_access_product_product,dawaa.access.product.product,product.model_product_product,group_edit_product_product,1,1,1,1
+access_select_products,access_select_products,model_select_products,base.group_user,1,1,1,1

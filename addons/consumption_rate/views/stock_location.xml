@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model='ir.ui.view' id='view_location_form_warehouse_user'>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//group[1]" position="inside">
+                    <group string="Info" groups="stock.group_stock_manager">
+                        <field name="warehouse_team_id" help="CRM Team User ID"/>
+                        <field name="py_warehouse_id" help="Warehouse Of Location"/>
+                        <field name="is_damage"/>
+                        <field name="is_expire"/>
+                        <field name="is_dsd"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

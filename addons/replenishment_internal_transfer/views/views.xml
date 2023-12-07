@@ -1,0 +1,32 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="stock_picking_form_inherit">
+            <field name="name">stock picking form view inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="button_validate" string="Second Validate" 
+                            type="object" class="oe_highlight" attrs="{'invisible':[('state','!=','validate2')]}"/>
+                </xpath> 
+                <xpath expr="//field[@name='move_ids_without_package']" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|', ('state','=','validate2'), '&amp;', ('state', '=', 'done'), ('is_locked', '=', True)]}</attribute>
+                </xpath> 
+                <xpath expr="//field[@name='move_line_ids_without_package']" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|', '|', '|',('show_operations', '=', False), ('state', '=', 'cancel'), ('state','=','validate2'), '&amp;', ('state', '=', 'done'), ('is_locked', '=', True)]}</attribute>
+                </xpath> 
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="stock_location_form_inherit">
+            <field name="name">stock location form view inherit</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='return_location']" position="after">
+                    <field name="is_expire_location"/>
+                </xpath> 
+            </field>
+        </record>
+    </data>
+</odoo>

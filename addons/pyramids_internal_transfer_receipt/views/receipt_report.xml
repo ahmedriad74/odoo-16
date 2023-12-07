@@ -1,0 +1,177 @@
+<odoo>
+    <data>
+        <record id="paperformat_portrait_internal" model="report.paperformat">
+            <field name="name">Internal Transfer Receipt</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">105</field>
+            <field name="page_width">74</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">0</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">100</field>
+        </record>
+        <template id="custom_external_layout_standard_internal">
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+            <div class="article o_report_layout_standard">
+                <t t-raw="0"/>
+            </div>
+        </template>
+        <record id="action_report_internal_transfer_receipt" model="ir.actions.report">
+            <field name="name">Internal Transfer Direct Receipt</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">pyramids_internal_transfer_receipt.print_internal_transfer_template</field>
+            <field name="report_file">pyramids_internal_transfer_receipt.print_internal_transfer_template</field>
+            <field name="paperformat_id" ref="pyramids_internal_transfer_receipt.paperformat_portrait_internal" />
+            <field name="binding_model_id" ref="model_stock_picking" />
+            <field name="binding_type">report</field>
+        </record>
+        <template id="print_internal_transfer_template">
+            <t t-call="web.html_container">
+                <t t-call="pyramids_internal_transfer_receipt.custom_external_layout_standard_internal">
+                    <div class="page" style="font-size:16pt !important;">
+                        <t t-foreach="docs" t-as="doc">
+                            <div class="col-md-6" style="padding:0">
+                                <div style="margin:0 auto;margin-top:4px;width:100%;text-align:center;font-size:12px;">
+                                    <img t-if="doc.company_id.logo" class=" text-center"
+                                         t-att-src="image_data_uri(doc.company_id.logo)"
+                                         style="max-height: 100px;max-width: 100px;text-center" alt="Logo"/>
+                                    <div t-field="doc.company_id.name"/>
+                                    <div t-field="doc.company_id.phone"/>
+                                </div>
+                                <div style="font-size:12px;font-weight:bold;text-decoration:underline;margin:8px auto;width:100%;text-align:center;">
+                                    تحويل داخلي
+                                </div>
+                                <table style="width:100%;font-size:12px;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="text-align: right;" colspan="2">
+                                                <span style="padding:2px;" t-field="doc.first_validate_date"/>
+                                                <span style="padding-right:.6rem;">:</span>
+                                                <label style="margin-bottom:0">تاريخ خروج التحويل</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right;" colspan="2">
+                                                <span style="padding:2px;" t-field="doc.date_done"/>
+                                                <span style="padding-right:.6rem;">:</span>
+                                                <label style="margin-bottom:0">تاريخ وصول التحويل</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right;" colspan="2">
+                                                <span style="padding:2px;" t-field="doc.location_id.complete_name"/>
+                                                <span style="padding-right:.6rem;">:</span>
+                                                <label style="margin-bottom:0">تحويل
+                                                    <span> </span>من
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right;" colspan="2">
+                                                <span style="padding:2px;" t-field="doc.location_dest_id.complete_name"/>
+                                                <span style="padding-right:.1rem;">:</span>
+                                                <label style="margin-bottom:0">تحويل
+                                                    <span> </span>إلي
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right;" colspan="2">
+                                                <span style="padding:2px;" t-field="doc.delivery_employee_id.name"/>
+                                                <span style="padding-right:.1rem;">:</span>
+                                                <label style="margin-bottom:0">إسم
+                                                    <span> </span>الدليفيري
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="height:1px;background:black;"/>
+                                <table style="border-top:1px solid black;font-size:12px;width:100%;margin-top:4px;">
+                                    <thead>
+                                        <th style="text-align:center;padding-right:8px;">الكمية</th>
+                                        <th style="text-align:center;padding:8px;">الصنف</th>
+                                    </thead>
+                                    <tbody style="border-top:1px solid black;">
+                                        <t t-set="qty" t-value="0"/>
+                                        <t t-foreach="doc.move_line_ids" t-as="line">
+                                            <tr>
+                                                <td style="padding-right:8px;text-align:center;">
+                                                    <span t-esc="'{:,.2f}'.format(line.qty_done)"/>
+                                                </td>
+                                                <td>
+                                                    <span style="word-break:break-all;text-align:left;" t-field="line.product_id.display_name"/>
+                                                </td>
+                                            </tr>
+                                            <t t-set="qty" t-value="qty+line.qty_done"/>
+                                    </t>
+                                    </tbody>
+                                </table>
+                                <div style="height:1px;background:black;"/>
+                                <table style="border-top:1px solid black;width:100%;font-size:12px;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="text-align: right;" colspan="2">
+                                                <span style="padding:2px;" t-esc="len(doc.move_line_ids)"/>
+                                                <span>:</span>
+                                                <label style="margin-bottom:0">عدد
+                                                    <span> </span>الاصناف
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; " colspan="2">
+                                                <span style="padding:2px;" t-esc="qty"/>
+                                                <span>:</span>
+                                                <label style="margin-bottom:0">الكميه</label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="font-size:12px;border-top:1px solid black;">
+                                    <div>Printed by :
+                                        <span t-esc="user.name"/>
+                                    </div>
+                                    <div>Printed on :
+                                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M:%S')"/>
+                                    </div>
+                                    <div>
+                                        <center>Powered by roayadm.com</center>
+                                    </div>
+                                </div>
+                            </div>
+                            <t t-esc="doc.change_size_page(doc.move_line_ids)"/>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </template>
+        <record id="stock_picking_view_receipt_report" model="ir.ui.view">
+            <field name="model">stock.picking</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="stock.view_picking_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button type="action" string="INT Receipt" class="oe_highlight" name="%(pyramids_internal_transfer_receipt.action_report_internal_transfer_receipt)d" attrs="{'invisible':[('state','not in',('validate2','done'))]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

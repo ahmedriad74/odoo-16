@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  
+
+    <template id="print_payment_statment_report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page" style="font_size:16pt !important;">
+                    <t t-foreach="docs" t-as="doc">
+                        <div class="col-md-6" style="border:0px solid black;">
+                            <br/>
+                            
+                            <table class="table table-condensed"
+                                    style="width:100%;border: 0px solid black;border-collapse: collapse;">
+                                <tr>
+                                    <td>
+                                        <br/>
+                                            <t t-if="doc.payment_type == 'outbound'">
+                                                <t t-if="not doc.journal_id.type == 'bank'">    
+                                                    <h3 class="text-center" style="font-size: 25px;">
+                                                        <strong><u>إيصال صرف نقدي</u> <br/> <u>Cash Payable Voucher</u></strong>
+                                                    </h3>
+                                                </t>
+                                                <t t-if="doc.journal_id.type == 'bank'">    
+                                                    <h3 class="text-center" style="font-size: 25px;">
+                                                        <strong><u>ايصال صرف شيك / تحويل بنكى</u> <br/> <u>Cash Payable Voucher</u></strong>
+                                                    </h3>
+                                                </t>
+                                            </t>
+                                            <t t-if="doc.payment_type == 'inbound'">
+                                                <t t-if="not doc.journal_id.type == 'bank'">    
+                                                    <h3 class="text-center" style="font-size: 25px;">
+                                                        <strong><u>إيصال إستلام نقدي</u> <br/> <u>Cash Receivable Voucher</u></strong>
+                                                    </h3>
+                                                </t>
+                                                <t t-if="doc.journal_id.type == 'bank'">    
+                                                    <h3 class="text-center" style="font-size: 25px;">
+                                                        <strong><u>ايصال استلام شيك / تحويل بنكى</u> <br/> <u>Cash Receivable Voucher</u></strong>
+                                                    </h3>
+                                                </t>
+                                            </t>
+                                        <br/>
+
+                                        <div style="border:1px solid black;float:right;pading:10px;font-size:1em;font-weight: bolder">
+                                            <strong><span t-field="doc.name"/></strong>
+                                        </div>
+
+                                        <div class="row">
+                                            <table width="100%" class="table-bordered" style='font-size:1em;font-weight: bolder'>
+                                                <tr>
+                                                    <td>Journal:
+                                                        <span t-field="doc.journal_id.name"/>
+                                                    </td>
+                                                    <td>
+                                                        Date:
+                                                        <span t-field="doc.date"/>
+                                                    </td>
+                                                </tr>
+                                                <!-- <t t-if="doc.post_type == 'multi'"> -->
+                                                    <tr>
+                                                        <!-- <t t-if="doc.post_type == 'single'"> -->
+                                                            <td>
+                                                                السيد:
+                                                                <span t-field="doc.partner_id.name"/>
+                                                            </td>
+                                                        <!-- </t> -->
+
+                                                        <td>
+                                                            بيان:
+                                                            <span t-field="doc.ref"/>
+                                                        </td>
+                                                    </tr>
+                                                <!-- </t> -->
+
+                                            </table>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <t t-if="doc.post_type == 'single'">
+                                <table class="table table-border"
+                                        style="width:100%;border-collapse: collapse;border: 1px solid gray;font-size:1em;font-weight: bolder">
+                                    <tr>
+                                        <th>Account</th>
+                                        <!-- <th>partner</th> -->
+                                        <th>Label</th>
+                                        <!-- <th>Analytic Account</th> -->
+                                        <th>Amount</th>
+                                    </tr>
+                                    <tr>
+                                        <td><span t-field="doc.destination_account_id.name"/></td>
+                                        <!-- <td><span t-field="doc.partner_id.name"/></td> -->
+                                        <td><span t-field="doc.ref"/></td>
+                                        <td><span t-field="doc.amount"/></td>
+                                    </tr>
+                                </table>
+                                <br/>
+                                <center style='font-size:1em;font-weight: bolder'><span t-field="doc.numinwords"/></center>
+                                <br/>
+                            </t>
+
+                            <t t-if="doc.post_type == 'multi'">
+
+                                <table class="table table-border"
+                                        style="width:100%;border-collapse: collapse;border: 1px solid gray;font-size:1em;font-weight: bolder">
+
+                                        <tr>
+                                            <th>Account</th>
+                                            <!-- <th>partner</th> -->
+                                            <th>Label</th>
+                                            <th>Analytic Account</th>
+                                            <!-- <th>Analytic Tags</th> -->
+                                            <th>Amount</th>
+                                        </tr>
+
+                                        <t t-set="sum_amount" t-value="0"/>
+                                        <t t-foreach="doc.writeoff_multi_acc_ids" t-as="line">
+                                            <tr>
+                                                <td><span t-field="line.writeoff_account_id.name"/></td>
+                                                <!-- <td><span t-field="line.writeoff_partner_id.name"/></td> -->
+                                                <td><span t-field="line.name"/></td>
+                                                <td><span t-field="line.analytic_account_id"/></td>
+                                                <!-- <td>
+                                                    <t t-foreach="line.analytic_tag_ids" t-as="tag">
+                                                        <p style="border-style: none solid;"><span t-field="tag.name"/></p>
+                                                    </t>
+                                                </td> -->
+                                                <td><span t-field="line.amount"/></td>
+                                                <t t-set="sum_amount" t-value="sum_amount+line.amount"/>
+                                            </tr>
+                                        </t>
+
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><strong style='font-size:1em;font-weight: bolder'><span t-esc="sum_amount"/></strong></td>
+                                        </tr>
+
+                                </table>
+
+                                   
+                                <center><span t-field="doc.numinwords"/></center>
+                            </t>
+                            <br/>
+
+                            <strong style="float:right;"><u>المستلم</u></strong>
+                            <br/>
+                            <strong style="float:right;">/اﻷسم</strong>
+                            <br/>
+                            <br/>
+                            <strong style="float:right;">/التوقيع</strong>
+                            <br/>
+                            <br/>
+
+                            <center>
+                                <div style="border:0px solid black;">
+                                    &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;
+                                    <div style="display:inline-block;float:left">
+                                        <strong>المدير المالي</strong>
+                                        <br/>
+                                        <hr/>
+                                    </div>
+                                    &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;
+                                    <div style="display:inline-block">
+                                        <strong>رئيس الحسابات</strong>
+                                        <br/>
+                                        <hr/>
+                                    </div>
+                                    &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;
+                                    <div style="display:inline-block;float:right">
+                                        <strong>أمين الخزينه</strong>
+                                        <br/>
+                                        <hr/>
+                                    </div>
+                                    &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;
+                                </div>
+                            </center>
+                            <!-- <center>
+                                <div>
+                                    <strong>Received by &#160; &#160; &#160; &#160; المستلم</strong>
+                                    <br/>
+                                    <hr/>
+                                </div>
+                            </center> -->
+
+                            <!-- <br/>
+                            <br/>
+                            <br/> -->
+
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="payment_statment_report_pdf" model="ir.actions.report">
+            <field name="name">Payment Statment</field>
+            <field name="model">account.payment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">send_receive_request.print_payment_statment_report</field>
+            <field name="report_file">send_receive_request.print_payment_statment_report</field>
+        </record>
+
+</odoo>

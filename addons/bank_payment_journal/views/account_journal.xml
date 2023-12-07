@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="add_bank_charges_account_journal_form_view_14" model="ir.ui.view">
+        <field name="name">add.bank.charges.account.journal.form.view</field>
+        <field name="model">account.journal</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="account.view_account_journal_form" />
+        <field name="arch" type="xml">
+            <!-- upgrade16 -->
+            <!-- <xpath expr="//page[@name='journal_entries']//group[1]" position="inside"> -->
+            <xpath expr="//page[@name='bank_account']//group[@name='bank_account_number']" position="after">
+                <group string="Bank Charges">
+                    <!-- <field name="bank_charges_account_id" attrs="{'invisible': [('type', '!=', 'bank')]}" domain="[('user_type_id.name', '=', 'Expenses')]"/> -->
+                    <field name="bank_charges_account_id" attrs="{'invisible': [('type', '!=', 'bank')]}" domain="[('account_type', '=', 'expense')]"/>
+                    <field name="charge_percentage" attrs="{'invisible': [('bank_charges_account_id', '=', False)],'required': [('bank_charges_account_id', '!=', False)]}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

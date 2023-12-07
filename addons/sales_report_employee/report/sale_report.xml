@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <record id="view_sale_order_report_search_employee_inherit" model="ir.ui.view">
+            <field name="name">view.sale.order.report.search.employee.inheritd</field>
+            <field name="model">sale.report</field>
+            <field name="inherit_id" ref="sale.view_order_product_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='status']" position="after">
+                    <filter string="Sales Employee" name="semployeeid" context="{'group_by':'sale_employee_id'}"/>
+                    <filter string="Delivery Employee" name="demployeeid" context="{'group_by':'delivery_employee_id'}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

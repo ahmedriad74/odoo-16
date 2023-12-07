@@ -1,0 +1,74 @@
+<odoo>
+    <data>
+        <record id="stock_warehouse_orderpoint_onhand" model="ir.ui.view">
+            <field name="name">stock.warehouse.orderpoint.add.onhand.num</field>
+            <field name="model">stock.warehouse.orderpoint</field>
+            <field name="inherit_id" ref="stock.view_warehouse_orderpoint_tree_editable"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='route_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                    <attribute name="force_save">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='qty_to_order']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_id']" position="after">
+                    <field name="qty_to_order"/>
+                    <field name="is_branch_order" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='visibility_days']" position="after">
+                    <field name="rate"/>
+                    <field name="on_hand_by_rate" invisible="1"/>                    
+                    <field name="ro_on_hand_by_rate"/>                    
+                </xpath>
+                <xpath expr="//field[@name='product_min_qty']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                    <attribute name="force_save">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_max_qty']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                    <attribute name="force_save">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_replenish']" position="replace"/>
+                <xpath expr="//button[@name='action_replenish_auto']" position="replace"/>
+                <xpath expr="//button[@name='%(stock.action_orderpoint_snooze)d']" position="replace"/>
+            </field>
+        </record>
+
+        <!-- Branch View  -->
+        <record id="stock.action_orderpoint_replenish" model="ir.actions.act_window">
+            <field name="domain">[('location_id.py_warehouse_id.crm_team_id.member_ids','=',uid)]</field>
+        </record>
+
+        <!-- Admin View  -->
+        <record id="admin_action_orderpoint_replenish" model="ir.actions.act_window">
+            <field name="name">Replenishment</field>
+            <field name="res_model">stock.warehouse.orderpoint</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="stock.view_warehouse_orderpoint_tree_editable"/>
+            <field name="search_view_id" ref="stock.stock_reorder_report_search"/>
+            <field name="help" type="html">
+            <p class="o_view_nocontent_replenishment">
+                You are good, no replenishment to perform!
+            </p><p>
+                You'll find here smart replenishment propositions based on inventory forecasts.
+                Choose the quantity to buy or manufacture and launch orders in a click.
+                To save time in the future, set the rules as "automated".
+            </p>
+            </field>
+        </record>
+
+        <menuitem
+            id="admin_menu_reordering_rules_replenish_inv"
+            action="admin_action_orderpoint_replenish"
+            name="All Replenishments" parent="consumption_rate.menu_reorder" sequence="30"
+            groups="stock.group_stock_manager"/>
+
+        <menuitem
+            id="admin_menu_reordering_rules_replenish_sales"
+            action="admin_action_orderpoint_replenish"
+            name="All Replenishments" parent="consumption_rate.menu_reorder_sales" sequence="30"
+            groups="stock.group_stock_manager"/>
+    </data>
+</odoo>

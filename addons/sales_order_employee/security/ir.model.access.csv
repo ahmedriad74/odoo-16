@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_assign_delivery,access_assign_delivery,model_assign_delivery,,1,1,1,1
+access_avg_delivery_duration_report,access.avg.delivery.duration.report,model_avg_delivery_duration_report,,1,1,1,1
+
+
+

@@ -1,0 +1,16 @@
+<odoo>
+  <data>
+    <record id="promotion_margin_product_template_inherit" model="ir.ui.view">
+      <field name="name">promotion.margin.product.template.inherit</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_form_view"/>
+      <field name="arch" type="xml">
+          <xpath expr="//group[1]" position="inside">  
+            <group>
+              <field name="zero_margin"/>  
+            </group>
+          </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

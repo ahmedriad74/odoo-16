@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="auth_wizard_form" model="ir.ui.view">
+        <field name="name">auth.wizard.form</field>
+        <field name="model">auth.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Appointment">
+                <group class="oe_title">
+                    <field name="password" password="1"/>
+                </group>
+                <footer>
+                    <button name="action_check_password" string="Confirm"
+                            class="btn-primary" type="object" />
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_auth_wizard" model="ir.actions.act_window">
+        <field name="name">Report Authentication</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">auth.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="auth_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

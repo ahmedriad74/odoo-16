@@ -1,0 +1,47 @@
+<odoo>
+  <data>
+    <record id="view_account_journal_search_inherit" model="ir.ui.view">
+      <field name="name">account.journal.search.inherit</field>
+      <field name="model">account.journal</field>
+      <field name="inherit_id" ref="account.view_account_journal_search"/>
+      <field name="arch" type="xml">
+          <xpath expr="//search" position="inside">
+            <filter name="sales_team" string="Sales"
+                    domain="['|','&amp;', '&amp;',
+                              ('crm_team_name','like','Sales'),
+                              ('show_on_dashboard','=',True),
+                              ('name', 'not in', ('خزينة كول سنتر','خصم مكتسب')),
+                              ('type','=','purchase')]"/>
+          </xpath>
+      </field>
+    </record>
+
+    <record id="view_account_move_line_filter_inherit" model="ir.ui.view">
+      <field name="name">account.move.line.search.inherit</field>
+      <field name="model">account.move.line</field>
+      <field name="inherit_id" ref="account.view_account_move_line_filter"/>
+      <field name="arch" type="xml">
+        <xpath expr="//search" position="inside">
+          <filter string="Date" name="filter_date" date="date" default_period="this_month"/>
+        </xpath>
+      </field>
+    </record>
+
+    <record id="account.open_account_journal_dashboard_kanban" model="ir.actions.act_window">
+        <field name="context">{"search_default_sales_team": 1}</field>
+    </record>
+
+    <record id="account.action_account_moves_ledger_partner" model="ir.actions.act_window">
+        <field name="context">{
+            'journal_type':'general', 
+            'search_default_posted':1, 
+            'search_default_payable':1, 
+            'search_default_receivable':1, 
+            'search_default_unreconciled':1,
+            "search_default_filter_date":1
+          }
+        </field>
+    </record>
+  </data>
+</odoo>
+

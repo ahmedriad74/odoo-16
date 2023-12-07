@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+        <record id="dawaa_add_transfer_view_picking_form" model="ir.ui.view">
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name='sender_employee' force_save="1"
+                        attrs="{'required': [('state', '=', 'assigned'), ('picking_type_code','=','internal')]}"/>
+                    <field name='sender_employee_code' 
+                        password="1"
+                        attrs="{'readonly': [('state', '!=', 'assigned')]}"/>
+                    <field name='receiver_employee' force_save="1"/>
+                    <field name='receiver_employee_code' 
+                        password="1"
+                        attrs="{'readonly': [('state', '!=', 'validate2')]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

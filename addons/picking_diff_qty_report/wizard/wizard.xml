@@ -1,0 +1,16 @@
+<odoo>
+    <record id="wizard_report_excel" model="ir.ui.view">
+        <field name="model">wizard.report.excel</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Difference QTY Report">
+                <group>
+                    <field name="attachment_ids" widget="many2many_binary"/>
+                </group>
+                <footer>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

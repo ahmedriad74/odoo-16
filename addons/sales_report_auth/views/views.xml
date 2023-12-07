@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_employee_form_inherit" model="ir.ui.view">
+        <field name="name">employee.form.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='o_work_employee_container']//group[1]" position="inside">
+                <field name="sale_report_access" />
+                <field name="return_access" />
+            </xpath>
+        </field>
+    </record>
+    
+    <menuitem id="menu_report_sale_auth"
+              name="Sales Report"
+              parent="sale.sale_menu_root"
+              sequence="15"
+              groups="sales_team.group_sale_salesman"
+              />
+
+    <menuitem id="menu_report_product_auth"
+              name="Sales Report"
+              action="action_auth_wizard"
+              parent="menu_report_sale_auth"
+              sequence="15"
+              groups="sales_team.group_sale_salesman"
+              />
+</odoo>

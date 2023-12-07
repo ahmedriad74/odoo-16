@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <record id="view_employee_form_crm_team_inherit" model="ir.ui.view">
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@id='o_work_employee_container']//group[1]" position="inside">
+                    <field name='crm_team_id'/>
+                    <field name='is_sale'/>
+                    <field name='delivery_area'/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

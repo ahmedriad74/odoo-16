@@ -1,0 +1,53 @@
+<odoo>
+    <data>
+        <record id="view_account_move_kanban_delivery_emp" model="ir.ui.view">
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_account_move_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name='sale_employee_id' />
+                    <field name='delivery_employee_id' />
+                </xpath>
+                <xpath expr="//templates//div//div[2]//div" position="replace">
+                    <div class="col-12">
+                        <span>
+                        Source:
+                            <field name="invoice_origin"/>
+                        </span>
+                        <br/>
+                        <span>
+                        Sales:
+                            <field name='sale_employee_id' />
+                        </span>
+                        <br/>
+                        <span>
+                        Delivery:
+                            <field name='delivery_employee_id' />
+                        </span>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_move_form_delivery_emp" model="ir.ui.view">
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='other_info']//field[@name='partner_bank_id']" position="after">
+                    <field name='delivery_employee_id' />
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="add_sale_employee_to_view_invoice_tree" model="ir.ui.view">
+            <field name="name">add.sale.employee.to.view.invoice.tree</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_invoice_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_partner_display_name'][2]" position="after">
+                    <field name='sale_employee_id' invisible="str(context.get('default_move_type')) not in ('out_refund')"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

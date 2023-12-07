@@ -1,0 +1,36 @@
+<odoo>
+  <data>
+      <record id="view_sale_form_sms_code" model="ir.ui.view">
+        <field name="name">view.sale.form.sms.code</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+          <xpath expr="//header" position="inside">
+            <button type="object" string="Send SMS Code" name="send_sms" class="oe_stat_button"
+                    attrs="{'invisible': ['|', '|',
+                                                ('is_sms_order', '=', False),
+                                                ('state', '=', 'cancel'), 
+                                                ('sms_is_sent', '=', True)]}"/>
+          </xpath>
+          <xpath expr="//field[@name='partner_id']" position="after">
+            <field name="sms_is_sent" invisible="1"/>
+            <field name="is_sms_order" invisible="1"/>
+            <field name="sms_code" attrs="{'invisible': [('is_sms_order', '=', False)]}"/>
+            <field name="sent_sms_code" invisible="1"/>
+            <field name="sms_phone_number" attrs="{'invisible': ['|',('is_sms_order', '=', False), ('phone', '!=', False)]}"/>
+          </xpath>
+        </field>
+      </record>
+
+      <record id="view_pricelist_form_sms_code" model="ir.ui.view">
+        <field name="name">view.pricelist.form.sms.code</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='pricelist_discounts']" position="inside">
+              <field name="is_sms_pl"/>
+            </xpath>
+        </field>
+      </record>
+  </data>
+</odoo>

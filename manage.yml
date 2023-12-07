@@ -1,0 +1,22 @@
+version: '2'
+services:
+  initialize:
+    build: ./initialize
+    volumes:
+      - ./addons:/mnt/extra-addons
+    environment:
+      - ADMIN_PASSWORD
+      - DB_NAME
+      - DB_MASTER_PASSWORD
+      - RESTORE_CUSTOM_DB
+
+
+  backup-manual:
+    build: ./backup
+    environment:
+      - BACKUP_DIR
+      - DB_NAME
+      - DB_MASTER_PASSWORD
+      - PREFIX_BACKUP_NAME
+    volumes:
+      - ../backups:/usr/backups

@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_consumption_rate_manager,access.stock.consumption.rate.manager,model_stock_consumption_rate,stock.group_stock_manager,1,1,1,1
+access_stock_consumption_rate_user,access.stock.consumption.rate,model_stock_consumption_rate,stock.group_stock_user,1,1,1,0
+access_stock_warehouse_orderpoint_manager,access.stock.warehouse.orderpoint.manager,model_stock_warehouse_orderpoint,stock.group_stock_manager,1,1,1,1
+access_stock_warehouse_orderpoint_user,access.stock.warehouse.orderpoint,model_stock_warehouse_orderpoint,stock.group_stock_user,1,1,1,0
+access_stock_day_locations_manager,access.stock.day.locations.manager,model_stock_day_locations,stock.group_stock_manager,1,1,1,1
+access_stock_day_locations_user,access.stock.day.locations,model_stock_day_locations,stock.group_stock_user,1,1,1,0
+access_stock_reorder_setting_manager,access.stock.reorder.setting.manager,model_stock_reorder_setting,stock.group_stock_manager,1,1,1,1
+access_stock_reorder_setting_user,access.stock.reorder.setting,model_stock_reorder_setting,stock.group_stock_user,1,1,1,1
+access_stock_reorder_setting_line_manager,access.stock.reorder.setting.line.manager,model_stock_reorder_setting_line,stock.group_stock_manager,1,1,1,1
+access_stock_reorder_setting_line_user,access.stock.reorder.setting.line,model_stock_reorder_setting_line,stock.group_stock_user,1,1,1,1
+purchase_requisition.access_purchase_requisition,purchase.requisition,purchase_requisition.model_purchase_requisition,show_inv_reporting_for_sales.group_sales_users,1,0,0,0
+purchase_requisition.access_purchase_requisition_sales,purchase.requisition.sales,purchase_requisition.model_purchase_requisition,sales_team.group_sale_salesman,1,0,0,0

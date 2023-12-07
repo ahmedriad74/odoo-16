@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_create_transferes_wizard" model="ir.ui.view">
+        <field name="name">view.create.transferes.wizard</field>
+        <field name="model">create.transfers.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Transfers">
+                <field name="binary_file"/>
+                <footer>
+                    <button name="action_create_trans" string="Create" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_view_import_products_wizard" model="ir.actions.act_window">
+        <field name="res_model">create.transfers.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_create_transferes_wizard"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

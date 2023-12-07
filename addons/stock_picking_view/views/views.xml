@@ -1,0 +1,73 @@
+<odoo>
+    <data>
+        <!-- inhert stock form view  -->
+        <record id="view_picking_form_view_inh" model="ir.ui.view">
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_validate'][2]" position="replace">
+                    <button name="button_validate" 
+                attrs="{'invisible': ['|', ('state', 'not in', ('waiting')), ('show_validate', '=', False)]}"
+                 string="Validate" type="object" groups="stock.group_stock_user" class="o_btn_validate"/>
+                </xpath>
+                <xpath expr="//field[@name='location_id']" position="attributes">
+                    <attribute name="domain">[('usage', '=', 'internal')]</attribute>
+                </xpath>
+                <xpath expr="//field[@name='location_dest_id']" position="attributes">
+                    <attribute name="domain">[('usage', '=', 'internal')]</attribute>
+                </xpath>
+                <xpath expr="//widget[@name='signature'][1]" position="attributes">
+                    <attribute name="groups">base.group_system</attribute>
+                </xpath>
+                <xpath expr="//widget[@name='signature'][2]" position="attributes">
+                    <attribute name="groups">base.group_system</attribute>
+                </xpath>
+                <xpath expr="//button[@name='do_print_picking']" position="attributes">
+                    <attribute name="groups">base.group_system</attribute>
+                </xpath>
+                <xpath expr="//button[@name='%(stock.action_report_delivery)d']" position="attributes">
+                    <attribute name="groups">base.group_system</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_scrap']" position="attributes">
+                    <attribute name="groups">base.group_system</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_cancel']" position="replace">
+                    <button name="action_cancel" 
+                    attrs="{'invisible': ['|',('state', 'not in', ('assigned', 'confirmed', 'partially_available', 'draft', 'waiting')),
+                    ('picking_type_code', 'in', ('incoming','outgoing'))]}" 
+                    string="Cancel" groups="base.group_user" type="object"/>
+                </xpath>
+            </field>
+        </record>
+        <!-- inhert stock tree view  -->
+        <record id="vpicktree_view_inh" model="ir.ui.view">
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
+                <xpath expr="//button[@name='do_unreserve']" position="replace">
+                    <button name="button_validate" type="object" string="Validate"/>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="before">
+                    <field name="write_date" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+        <!-- inhert stock search -->
+        <record id="view_picking_internal_search_inh" model="ir.ui.view">
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position="replace"/>
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="origin"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

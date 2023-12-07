@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="act_report_view_inherit" model="ir.ui.view">
+        <field name="name">product.search.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="replace">
+                <field name="name" string="Product" filter_domain="['|', '|', '|', ('default_code', 'ilike', self), ('product_variant_ids.default_code', 'ilike', self),('name', '=ilike', str(self)+'%'), ('barcode', 'ilike', self)]"/>
+                <!-- upgrade16 -->
+                <!-- <field name="lst_price" string="Price" filter_domain="[('list_price', '=', self)]"/> -->
+                <field name="list_price" string="Price" filter_domain="[('list_price', '=', self)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="act_report_view_inherit_product" model="ir.ui.view">
+        <field name="name">product.search.inherit.product</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="replace">
+                <field name="name" string="Product" filter_domain="['|', '|', ('default_code', 'ilike', self), ('name', '=ilike', str(self)+'%'), ('barcode', 'ilike', self)]"/>
+                <field name="lst_price" string="Price" filter_domain="[('list_price', '=', self)]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

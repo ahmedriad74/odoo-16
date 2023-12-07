@@ -1,0 +1,62 @@
+<odoo>
+    <data>
+        <record id="action_quotations_with_onboarding_own" model="ir.actions.act_window">
+            <field name="name">Quotations OW</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'search_default_my_quotation': 1}</field>
+            <field name="domain">[('team_id.member_ids','=',uid),('invoice_count', '=', 0),('state','in',['draft','sale','done'])]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new quotation, the first step of a new sale!
+                </p>
+                <p>
+                    Once the quotation is confirmed by the customer, it becomes a sales order.
+                    <br/> You will be able to create an invoice and collect the payment.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_sale_quotations_own"
+                action="action_quotations_with_onboarding_own"
+                parent="sale.sale_order_menu"
+                sequence="1" groups="sales_team.group_sale_salesman"/>
+
+        <menuitem id="sale.menu_sale_quotations"
+                action="sale.action_quotations_with_onboarding"
+                parent="sale.sale_order_menu"
+                sequence="1" groups="sales_team.group_sale_salesman_all_leads"/>
+
+        <menuitem id="sale.menu_sale_order"
+            name="Orders"
+            action="sale.action_orders"
+            parent="sale.sale_order_menu"
+            sequence="2" groups="sales_team.group_sale_salesman_all_leads"/>
+        
+        <menuitem id="sale.menu_sale_invoicing"
+            name="To Invoice"
+            parent="sale.sale_menu_root"
+            sequence="3" groups="sales_team.group_sale_salesman_all_leads"/>
+
+        <record id="res_partner_view_buttons_own" model="ir.ui.view">
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="sale.res_partner_view_buttons"/>
+            <field name="arch" type="xml">
+                <!-- upgrade16 -->
+                <xpath expr="//button[@name='action_view_sale_order']" position="attributes">
+                    <attribute name="groups">sales_team.group_sale_salesman_all_leads</attribute>
+                </xpath>
+                <!-- <button name="%(sale.act_res_partner_2_sale_order)d" position="replace">
+                    <button class="oe_stat_button" type="action" name="%(sale.act_res_partner_2_sale_order)d" 
+                        groups="sales_team.group_sale_salesman_all_leads"
+                        icon="fa-usd">
+                        <field string="Sales" name="sale_order_count" widget="statinfo"/>
+                    </button>
+                </button> -->
+            </field>
+        </record>
+    </data>
+</odoo>

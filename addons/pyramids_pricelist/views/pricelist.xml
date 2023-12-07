@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+        <record id="product_pricelist_view_cont_inherit" model="ir.ui.view">
+            <field name="model">product.pricelist</field>
+            <field name="inherit_id" ref="product.product_pricelist_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='pricelist_config']//group" position="inside">
+                    <group>
+                        <field name="is_contract"/>
+                        <field name="is_depend_on_cost"/>
+                        <field name="free_products_by_margin"/>
+                        <field name="product_cost"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,37 @@
+<odoo>
+    <data>
+        <record id="view_order_form_employee_inherit" model="ir.ui.view">
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field eval="17" name="priority"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name='barcode' attrs="{'readonly':[('state','not in',('draft','sent'))]}"/>
+                    <field name='barcode_stored' invisible="1"/>
+                    <field name='area' invisible="1"/>
+                    <field name='order_wd' invisible="1"/>
+                    <field name='delivery_barcode' force_save="1" attrs="{'readonly':[('state','not in',('draft','sent'))]}"/>
+                </xpath>
+                <xpath expr="//field[@name='validity_date']" position="before">
+                    <field name='sale_employee_id' force_save="1" required='1'
+                    options="{'no_create':True, 'no_create_edit': True, 'no_open': True}"/>
+                    <field name='delivery_employee_id' force_save="1" options="{'no_create':True, 'no_create_edit': True, 'no_open': True}"/>
+                </xpath>
+                <xpath expr="//div[hasclass('oe_right')]" position="replace">
+                    <div class="oe_right">
+                        <button string="Add shipping" class="oe_highlight" name="action_open_delivery_wizard" type="object" attrs="{'invisible': ['|', '|', '|',('is_all_service', '=', True),  ('order_line', '=', []),('delivery_set', '=', True), ('state','not in',('draft','sent'))]}"/>
+                        <button string="Update shipping cost" name="action_open_delivery_wizard" context="{'carrier_recompute':True}" type="object" class="text-warning btn-secondary" attrs="{'invisible': ['|', '|', '|',('is_all_service', '=', True), ('recompute_delivery_price', '=', False), ('delivery_set', '=', False),('state','not in',('draft','sent'))]}"/>
+                        <button string="Update shipping cost" name="action_open_delivery_wizard" context="{'carrier_recompute':True}" type="object" attrs="{'invisible': ['|', '|', '|',('is_all_service', '=', True), ('recompute_delivery_price', '=', True), ('delivery_set', '=', False), ('state','not in',('draft','sent'))]}"/>
+                    </div>
+                    <div class="oe_right">
+                    <!-- upgrade16 ==> 'sale_coupon.sale_coupon_apply_code_action' -> 'sale_loyalty.sale_loyalty_coupon_wizard_action' -->
+                        <!-- <button name="sale_coupon.sale_coupon_apply_code_action" class="btn btn-secondary" string="Coupon" type="action" groups="base.group_user" states="draft,sent,sale"/> -->
+                        <button name="sale_loyalty.sale_loyalty_coupon_wizard_action" class="btn btn-secondary" string="Coupon" type="action" groups="base.group_user" states="draft,sent,sale"/>
+                        <!-- <button name="recompute_coupon_lines" class="btn btn-secondary" string="Promotions" help="When clicked, the content of the order will be checked to detect (and apply) possible promotion programs." type="object" states="draft,sent,sale"/> -->
+                        <button name="action_open_reward_wizard" class="btn btn-secondary" string="Promotions" help="When clicked, the content of the order will be checked to detect (and apply) possible promotion programs." type="object" states="draft,sent,sale"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

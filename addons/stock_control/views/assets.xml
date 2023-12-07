@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template
+        id="order_all_js"
+        name="Order All title JS"
+        inherit_id="web.assets_backend"
+    >
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/stock_control/static/src/js/stock_orderpoint_list_controller.js"
+            />
+            <script
+                type="text/javascript"
+                src="/stock_control/static/src/js/stock_orderpoint_list_model.js"
+            />
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <record id="view_order_form_id_inherit" model="ir.ui.view">
+            <field name="name">view.order.form.id.inheritd</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='currency_id']" position="before">
+                    <field name="id_required" invisible="1"/>
+                    <field name="card_id" 
+                        attrs="{'required': [('id_required','=',True)], 'invisible': [('id_required','=',False)]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

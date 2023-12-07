@@ -1,0 +1,29 @@
+<odoo>
+  <data>
+    <record id="purchase_requisition_inherit" model="ir.ui.view">
+          <field name="name">purchase.requisition.inherit</field>
+          <field name="model">purchase.requisition</field>
+          <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_tree"/>
+          <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="after">
+              <button name="action_cancel_tender"
+                      string="Cancel Tender"
+                      class="fa fa-times"
+                      type="object"/>
+            </xpath>
+          </field>
+    </record>
+    
+    <record id="action_cancel_tender" model="ir.actions.server">
+        <field name="name">Cancel Tender</field>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="model_id" ref="purchase_requisition.model_purchase_requisition" />
+        <field name="binding_model_id" ref="purchase_requisition.model_purchase_requisition"/>
+        <field name="code">
+            if records:
+              action =records.action_cancel_tender()
+        </field>
+    </record>
+  </data>
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="add_cash_difference_account_journal_form_view" model="ir.ui.view">
+        <field name="name">add.cash.difference.account.journal.form.view</field>
+        <field name="model">account.journal</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="account.view_account_journal_form" />
+        <field name="arch" type="xml">
+            <!-- upgrade16 -->
+            <!-- <xpath expr="//page[@name='journal_entries']//group[1]" position="inside"> -->
+            <xpath expr="//page[@name='bank_account']//group[@name='bank_account_number']" position="after">
+                <group string="Cash Difference">
+                    <!-- <field name="cash_difference_account_id" attrs="{'invisible': [('type', '!=', 'cash')]}" domain="[('user_type_id.name', '=', 'Expenses')]"/> -->
+                    <field name="cash_difference_account_id" attrs="{'invisible': [('type', '!=', 'cash')]}" domain="[('account_type', '=', 'Expenses')]"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

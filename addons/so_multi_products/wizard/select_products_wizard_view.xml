@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_select_products_form" model="ir.ui.view">
+        <field name="name">select.products.form</field>
+        <field name="model">select.products</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Select Products">
+                <notebook>
+                    <page string="Products" name="product_ids">
+                        <field name="pricelist_id" invisible='1'/>
+                        <field name="warehouse_id" invisible='1'/>
+
+                        <field name="product_ids" mode="tree" context="{'tree_view_ref': 'so_multi_products.inherit_view_product_tree_add'}" domain="[('sale_ok', '=', True)]">
+                            <tree string="Sales Order Lines" editable="bottom">
+                                <field name="name" readonly="1" optional="show"/>
+                                <field name="product_template_attribute_value_ids" optional="show" widget="many2many_tags" groups="product.group_product_variant" readonly="1"/>
+                                <field name="py_box_product_uom_qty" optional="show"/>
+                                <field name="py_strip_product_uom_qty" optional="show"/>
+                                <field name="unit_price" readonly='1'/>
+                                <field name="available" readonly='1'/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+                <footer>
+                    <button name="select_products" string="Add" type="object" class="oe_highlight" />
+                    <button string="Cancel" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="act_open_select_products_view">
+        <field name="name">Select Products</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">select.products</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+    <record model="ir.actions.act_window.view" id="act_open_select_products_view_form">
+        <field name="act_window_id" ref="act_open_select_products_view" />
+        <field name="sequence" eval="10" />
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_select_products_form" />
+    </record>
+</odoo>

@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="account_analytic_distribution_model_form_view_inherit" model="ir.ui.view">
+            <field name="name">account.analytic.distribution.model.form.view.inherit</field>
+            <field name="model">account.analytic.distribution.model</field>
+            <field name="inherit_id" ref="analytic.account_analytic_distribution_model_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                        <field name="crm_team_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

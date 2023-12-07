@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="picking_operations_report_inherit_report_picking" inherit_id="stock.report_picking">
+        <xpath expr="//div[@name='div_sched_date']" position="after">
+            <div class="col-auto">
+                <strong>Sender Employee:</strong>
+                <p t-field="o.sender_employee"/>
+            </div>
+            <div class="col-auto">
+                <strong>Receiver Employee:</strong>
+                <p t-field="o.receiver_employee"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>

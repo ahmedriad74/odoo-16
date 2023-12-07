@@ -1,0 +1,42 @@
+<odoo>
+    <data>
+        <record id="invoice_customer_inherit" model="ir.ui.view">
+            <field name="name">customer.invoice.price.edit.inheritd</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <!-- upgrade16 ==> 'analytic_line_id' become 'analytic_distribution' -->
+                <!-- upgrade16 ==> 'move_state' is already exist as 'move_type' -->
+                <!-- Bill -->
+                <xpath expr="//field[@name='invoice_line_ids']//tree//field[@name='analytic_distribution']" position="before">
+                    <field name='required_analytical' invisible="1"/>    
+                    <field name='move_type' invisible="1"/>    
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']//tree//field[@name='analytic_distribution']" position="attributes">
+                    <attribute name="attrs">{'required':[('move_type','!=','out_invoice'),('required_analytical','=', True)]}</attribute>
+                    <attribute name="force_save">1</attribute>
+                </xpath>
+                <!-- Journal -->
+                <xpath expr="//field[@name='line_ids']//tree//field[@name='analytic_distribution']" position="before">
+                    <field name='required_analytical' invisible="1"/>    
+                    <field name='move_type' invisible="1"/>    
+                </xpath>
+                <xpath expr="//field[@name='line_ids']//tree//field[@name='analytic_distribution']" position="attributes">
+                    <attribute name="attrs">{'required':[('move_type','!=','out_invoice'),('required_analytical','=', True)]}</attribute>
+                    <attribute name="force_save">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="account_account_required_inherit" model="ir.ui.view">
+            <field name="name">customer.account.required.inheritd</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='deprecated']" position="after">
+                    <field name='required_analytical'/>    
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,10 @@
+<odoo>
+  <data>
+      <menuitem id="create_transfers_from_excel" 
+              name="Create Transfers (Excel)" 
+              parent="stock.menu_stock_warehouse_mgmt"
+              action="action_view_import_products_wizard" 
+              sequence="20"/>
+
+  </data>
+</odoo>

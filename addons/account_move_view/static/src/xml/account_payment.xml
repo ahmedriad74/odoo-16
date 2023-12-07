@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-extend="PaymentPopOver">
+        <t t-jquery=".js_unreconcile_payment" t-operation="replace">
+        </t>
+        <t t-jquery=".js_open_payment" t-operation="replace">
+        </t>
+    </t>
+</templates>

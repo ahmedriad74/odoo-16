@@ -1,0 +1,32 @@
+<odoo>
+    <data>
+        <record id="view_order_form_address_inherit" model="ir.ui.view">
+            <field name="name">view.order.form.address.inheritd</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="replace">
+                    <field name="partner_id" widget="res_partner_many2one" 
+                        context="{'res_partner_search_mode': 'customer', 'show_vat': True}"
+                        required="1"
+                        options="{'always_reload': True}" 
+                        domain="[('customer_rank','&gt;',0)]" 
+                        on_change="1" 
+                        can_create="true" 
+                        can_write="true" 
+                        attrs="{'readonly':[('state','not in',('draft','sent'))]}"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="street" attrs="{'readonly':[('state','not in',('draft','sent'))]}"/>
+                    <field name="py_landmark" attrs="{'readonly':[('state','not in',('draft','sent'))]}"/>
+                    <field name="city" attrs="{'readonly':[('state','not in',('draft','sent'))]}"/>
+                    <field name="state_id" attrs="{'readonly':[('state','not in',('draft','sent'))]}"/>
+                    <field name="country_id" attrs="{'readonly':[('state','not in',('draft','sent'))]}"/>
+                </xpath>
+                <xpath expr="//group[@name='partner_details']" position="inside">
+                    <field name="phone" widget="phone"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,62 @@
+<odoo>
+    <data>
+        <record id="view_stock_move_tree_confirm_flag" model="ir.ui.view">
+            <field name="model">stock.move.line</field>
+            <field name="inherit_id" ref="stock.view_stock_move_line_detailed_operation_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="confirm_flag"/>
+                </xpath>
+                <xpath expr="//tree//field[@name='lot_id']" position="after">
+                    <field name="prod_lot_price" force_save="1"/>
+                </xpath>
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="decoration-bf">(confirm_flag == True)</attribute>
+                    <attribute name="decoration-it">(confirm_flag == True)</attribute>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="view_picking_move_line_tree" model="ir.ui.view">
+            <field name="name">stock.picking.move.line.tree</field>
+            <field name="model">stock.move.line</field>
+            <field eval="50" name="priority"/>
+            <field name="arch" type="xml">
+                <!--TODO: Parent need to be reviewd-->
+                <tree decoration-danger="state != 'done' " decoration-muted="state == 'cancel' " string="Stock Move Line" editable="bottom">
+                    <field name="company_id" invisible="1" force_save="1"/>
+                    <field name="picking_id" invisible="1" force_save="1"/>
+                    <field name="move_id" invisible="1" force_save="1"/>
+                    <field name="picking_type_entire_packs" invisible="1"/>
+                    <field name="product_uom_category_id" invisible="1"/>
+                    <field name="picking_state" invisible="1"/>
+                    <field name="product_id" readonly='1'/>
+                    <field name="package_level_id" invisible="1"/>
+                    <field name="lots_visible" invisible="1"/>
+                    <!-- HOLD -->
+                    <field name="location_id" options="{'no_create': True}" attrs="{'readonly': ['|',('picking_state', '=', 'validate2'), '&amp;', ('package_level_id', '!=', False), ('picking_type_entire_packs', '=', True)]}" invisible="not context.get('show_source_location')" domain="[('id', 'child_of', location_id), '|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
+                    <field name="location_dest_id" width="0.75" attrs="{'readonly': ['|',('picking_state', '=', 'validate2'), '&amp;', ('package_level_id', '!=', False), ('picking_type_entire_packs', '=', True)]}" invisible="not context.get('show_destination_location')" domain="[('id', 'child_of', location_dest_id), '|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
+                    <!-- <field name="location_id" options="{'no_create': True}" attrs="{'readonly': ['|',('picking_state', '=', 'validate2'), '&amp;', ('package_level_id', '!=', False), ('picking_type_entire_packs', '=', True)]}" invisible="not context.get('show_source_location')" domain="[('id', 'child_of', location_id), '|', ('company_id', '=', False), ('company_id', '=', company_id)]" groups="stock.group_stock_multi_locations"/> -->
+                    <!-- <field name="location_dest_id" width="0.75" attrs="{'readonly': ['|',('picking_state', '=', 'validate2'), '&amp;', ('package_level_id', '!=', False), ('picking_type_entire_packs', '=', True)]}" invisible="not context.get('show_destination_location')" domain="[('id', 'child_of', location_dest_id), '|', ('company_id', '=', False), ('company_id', '=', company_id)]" groups="stock.group_stock_multi_locations"/> -->
+                    <field name="lot_id" groups="stock.group_production_lot" attrs="{'invisible': [('lots_visible', '=', False)], 'readonly': ['&amp;', ('package_level_id', '!=', False), ('picking_type_entire_packs', '=', True)]}" invisible="not context.get('show_lots_m2o')" domain="[('product_id', '=', product_id), ('company_id', '=', company_id)]" context="{'active_picking_id': picking_id,'default_company_id': company_id,'default_product_id': product_id,}"/>
+                    <field name="py_lot_text" groups="stock.group_production_lot" attrs="{'invisible': [('lots_visible', '=', False)], 'readonly': ['&amp;', ('package_level_id', '!=', False), ('picking_type_entire_packs', '=', True)]}" invisible="not context.get('show_lots_m2o')"/>
+                    <field name="py_lot_unit_price" groups="stock.group_production_lot" attrs="{'required': [('py_lot_text', '!=', False)], 'invisible': [('lots_visible', '=', False)], 'readonly': ['&amp;', ('package_level_id', '!=', False), ('picking_type_entire_packs', '=', True)]}" invisible="not context.get('show_lots_m2o')"/>
+                    <!--<field name="lot_name" widget="text" groups="stock.group_production_lot" placeholder="Write your SN/LN one by one or copy paste a list." attrs="{'readonly': ['&amp;', ('package_level_id', '!=', False), ('picking_type_entire_packs', '=', True)]}" invisible="not context.get('show_lots_text')"/>-->
+                    <field name="package_id" attrs="{'readonly': ['|',('picking_state', '=', 'validate2'), '&amp;', ('package_level_id', '!=', False), ('picking_type_entire_packs', '=', True)]}" invisible="not context.get('show_package')" groups="stock.group_tracking_lot"/>
+                    <field name="result_package_id" attrs="{'readonly': ['|',('picking_state', '=', 'validate2'), '&amp;', ('package_level_id', '!=', False), ('picking_type_entire_packs', '=', True)]}" groups="stock.group_tracking_lot"/>
+                    <field name="owner_id" attrs="{'readonly': ['&amp;', ('package_level_id', '!=', False), ('picking_type_entire_packs', '=', True)]}" invisible="not context.get('show_owner')" groups="stock.group_tracking_owner"/>
+                    <!-- upgrade16 ==> 'product_uom_qty' ==> 'reserved_uom_qty' -->
+                    <!-- <field name="product_uom_qty" invisible="not context.get('show_reserved_quantity')" readonly="1"/> -->
+                    <field name="reserved_uom_qty" invisible="not context.get('show_reserved_quantity')" readonly="1"/>
+                    <field name="state" readonly='1'/>
+                    <field name="is_locked" invisible="1"/>
+                    <field name="picking_code" invisible="1"/>
+                    <field name="confirm_flag" invisible="1"/>
+                    <field name="qty_done" attrs="{'readonly': ['|',('picking_state', '=', 'validate2'), '|', '&amp;', ('state', '=', 'done'), ('is_locked', '=', True), '&amp;', ('package_level_id', '!=', False), ('picking_type_entire_packs', '=', True)]}"/>
+                    <field name="product_uom_id" options="{'no_open': True, 'no_create': True}" readonly='1' string="Unit of Measure" groups="uom.group_uom"/>
+                    <field name="create_date" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

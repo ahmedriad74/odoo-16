@@ -1,0 +1,25 @@
+<odoo>
+    <data>
+        <!-- inhert & edit invoice form view  -->
+        <record id="payment_invoice_auto_assing_inherit" model="ir.ui.view">
+            <field name="name">payment.invoice.auto.asign.inheritd</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@id='account_invoice_payment_btn']" position="attributes">
+                    <attribute name="context">{'team_sales': team_id,'dont_redirect_to_payments': True}</attribute>
+                </xpath>
+            </field>
+        </record>
+        <!-- inhert & edit invoice form view  -->
+        <record id="account_payment_team" model="ir.ui.view">
+            <field name="model">account.payment.register</field>
+            <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='journal_id']" position="before">
+                    <field name="team_id" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

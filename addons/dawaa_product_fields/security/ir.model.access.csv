@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_brand_user,product.brand.user,model_product_brand,base.group_user,1,1,1,1
+access_product_levela_user,product.levela.user,model_product_levela,base.group_user,1,1,1,1
+access_product_levelb_user,product.levelb.user,model_product_levelb,base.group_user,1,1,1,1
+access_product_levelc_user,product.levelc.user,model_product_levelc,base.group_user,1,1,1,1
+access_product_leveld_user,product.leveld.user,model_product_leveld,base.group_user,1,1,1,1
+access_product_levele_user,product.levele.user,model_product_levele,base.group_user,1,1,1,1
+access_product_levelf_user,product.levelf.user,model_product_levelf,base.group_user,1,1,1,1
+access_product_item_company_user,product.item.company.user,model_product_item_company,base.group_user,1,1,1,1

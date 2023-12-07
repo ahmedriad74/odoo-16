@@ -1,0 +1,59 @@
+<odoo>
+  <data>
+    <record id="shift_management_form_view" model="ir.ui.view">
+      <field name="name">shift.management.form.view</field>
+      <field name="model">shift.management</field>
+      <field name="arch" type="xml">
+        <form string="Shift Management">
+          <Sheet>
+            <group>
+              <field name="name"/>
+              <field name="shift_start_date"/>
+              <field name="shift_end_date"/>
+              <field name="shift_hours"/>
+              <field name="shift_type"/>
+            </group>
+          </Sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="shift_management_tree_view" model="ir.ui.view">
+      <field name="name">shift.management.tree.view</field>
+      <field name="model">shift.management</field>
+      <field name="arch" type="xml">
+        <tree string="Shift Management">
+          <field name="name"/>
+          <field name="shift_start_date" widget="float_time"/>
+          <field name="shift_end_date" widget="float_time"/>
+          <field name="shift_hours"/>
+          <field name="shift_type"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="action_view_shift_management" model="ir.actions.act_window">
+      <field name="name">Shift Management</field>
+      <field name="res_model">shift.management</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="shift_management"
+          name="Shift Management"
+          action="action_view_shift_management"
+          parent="hr.menu_hr_employee_payroll"
+          sequence="3"/>
+
+
+    <record id="shift_inherit_view_employee_form" model="ir.ui.view">
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+          <xpath expr="//field[@name='job_id']" position="after">
+              <field name="shift_id"/>
+          </xpath>
+        </field>
+    </record>
+
+  </data>
+</odoo>

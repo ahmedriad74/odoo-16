@@ -1,0 +1,38 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="view_dawaa_stock_on_hand_tree_editable">
+        <field name="name">view.dawaa.stock.on.hand.tree.editable</field>
+        <field name="model">dawaa.stock.on.hand</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date"/>
+                <field name="internal_ref" force_save="1"/>
+                <field name="product_id"/>
+                <field name="levela_id"/>
+                <field name="location_id"/>
+                <field name="lot_id" groups="stock.group_production_lot"/>
+                <field name="lot_price" force_save="1"/>
+                <field name="sale_price"/>
+                <field name="current_month_on_hand"/>
+                <field name="cuurent_month_available_qty"/>
+                <field name="total_sale" force_save="1"/>
+                <field name="value" force_save="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_view_dawaa_quants">
+        <field name="name">Dawaa Stock On Hand</field>
+        <field name="res_model">dawaa.stock.on.hand</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{'create': False}</field>
+    </record>
+
+    <menuitem
+        id="menu_dawaa_stock_on_hand"
+        name="Dawaa Stock On Hand"
+        action="action_view_dawaa_quants"
+        parent="stock.menu_warehouse_report"/>
+
+  </data>
+</odoo>

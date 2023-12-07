@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+        <record id="phone_sale_order_search_inherit" model="ir.ui.view">
+            <field name="name">phone.sale.order.search.inheritd</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="phone"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_order_form_phone_inherit" model="ir.ui.view">
+            <field name="name">view.order.form.phone.inheritd</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='partner_details']" position="inside">
+                    <field name="phone" widget="phone"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_res_partner_filter_phone" model="ir.ui.view">
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="replace">
+                    <field name="name"
+                        filter_domain="['|', '|', ('display_name', 'ilike', self), ('ref', '=', self), ('phone', 'ilike', self)]"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

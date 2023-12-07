@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="mail.channel" id="channel_stock_control">
+            <field name="name">stock control</field>
+            <!-- upgrade16 ==> 'public' doen't exist more -->
+            <!-- <field name="public">private</field> -->
+            <field name="channel_type">channel</field>
+            <field name="group_ids" eval="[(4, ref('stock.group_stock_user'))]"/>
+        </record>
+
+        <!-- upgrade16 ==> 'partner' ==> 'member' -->
+        <!-- <record model="mail.channel.member" id="channel_partner_general_channel_for_admin">
+            <field name="partner_id" ref="base.partner_admin"/>
+            <field name="channel_id" ref="stock_control.channel_stock_control"/>
+        </record> -->
+    </data>
+</odoo>

@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+        <!-- inhert & edit analytic accounts form view  -->
+        <record id="analytic_accounts_auto_assign_inherit" model="ir.ui.view">
+            <field name="name">analytic.accounts.auto.asign.inheritd</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='main']" position="inside">
+                    <group>
+                        <field name="product_category_id" />
+                        <field name="crm_team_id" />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

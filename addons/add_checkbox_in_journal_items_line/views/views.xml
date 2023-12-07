@@ -1,0 +1,114 @@
+<odoo>
+  <data>
+    <record id="journal_item_tree_view_inherit" model="ir.ui.view">
+      <field name="name">journal item tree view inherit</field>
+      <field name="model">account.move.line</field>
+      <field name="inherit_id" ref="account.view_move_line_tree"/>
+      <field name="arch" type="xml">
+        <xpath expr="//tree" position="attributes">
+          <attribute name="multi_edit">1</attribute>
+        </xpath>
+        <xpath expr="//tree/field[@name='partner_id']" position="after">
+          <field name="receiving_letter"/>
+          <field name="receiving_letter_update_date" readonly='1' force_save='1'/>
+        </xpath>
+
+        <xpath expr="//tree/field[@name='account_id']" position="attributes">
+          <attribute name="readonly">1</attribute>
+          <attribute name="force_save">1</attribute>
+        </xpath>
+
+        <xpath expr="//tree/field[@name='partner_id']" position="attributes">
+          <attribute name="readonly">1</attribute>
+          <attribute name="force_save">1</attribute>
+        </xpath>
+        <xpath expr="//tree/field[@name='ref']" position="attributes">
+          <attribute name="readonly">1</attribute>
+          <attribute name="force_save">1</attribute>
+        </xpath>
+
+        <xpath expr="//tree/field[@name='name']" position="attributes">
+          <attribute name="readonly">1</attribute>
+          <attribute name="force_save">1</attribute>
+        </xpath>
+
+        <!-- upgrade16 ==>  'analytic_tag_ids' is deprecated -->
+        <!-- <xpath expr="//tree/field[@name='analytic_tag_ids']" position="attributes">
+          <attribute name="readonly">1</attribute>
+          <attribute name="force_save">1</attribute>
+        </xpath> -->
+
+        <xpath expr="//tree/field[@name='tax_ids']" position="attributes">
+          <attribute name="readonly">1</attribute>
+          <attribute name="force_save">1</attribute>
+        </xpath>
+
+        <xpath expr="//tree/field[@name='debit']" position="attributes">
+          <attribute name="readonly">1</attribute>
+          <attribute name="force_save">1</attribute>
+        </xpath>
+
+        <xpath expr="//tree/field[@name='credit']" position="attributes">
+          <attribute name="readonly">1</attribute>
+          <attribute name="force_save">1</attribute>
+        </xpath>
+
+        <xpath expr="//tree/field[@name='tax_tag_ids']" position="attributes">
+          <attribute name="readonly">1</attribute>
+          <attribute name="force_save">1</attribute>
+        </xpath>
+
+        <xpath expr="//tree/field[@name='date_maturity']" position="attributes">
+          <attribute name="readonly">1</attribute>
+          <attribute name="force_save">1</attribute>
+        </xpath>
+
+        
+      </field>
+    </record>
+
+    <record id="add_receiving_letter_to_view_invoice_tree" model="ir.ui.view">
+      <field name="name">add.receiving.letter.to.view.invoice.tree</field>
+      <field name="model">account.move</field>
+      <field name="inherit_id" ref="account.view_invoice_tree"/>
+      <field name="arch" type="xml">
+          <xpath expr="//field[@name='invoice_partner_display_name'][2]" position="after">
+              <field name='receiving_letter' invisible="str(context.get('default_move_type')) != 'in_invoice'"/>
+          </xpath>
+          <xpath expr="//tree" position="attributes">
+              <attribute name="multi_edit">1</attribute>
+          </xpath>
+
+          <xpath expr="//field[@name='name']" position="attributes">
+            <attribute name="readonly">1</attribute>
+          </xpath>
+
+          <xpath expr="//field[@name='invoice_date']" position="attributes">
+            <attribute name="readonly">1</attribute>
+          </xpath>
+
+          <xpath expr="//field[@name='invoice_date_due']" position="attributes">
+            <attribute name="readonly">1</attribute>
+          </xpath>
+
+          <xpath expr="//field[@name='ro_invoice_time']" position="attributes">
+            <attribute name="readonly">1</attribute>
+          </xpath>
+
+          <xpath expr="//field[@name='payment_reference']" position="attributes">
+            <attribute name="readonly">1</attribute>
+          </xpath>
+
+          <xpath expr="//field[@name='ref']" position="attributes">
+            <attribute name="readonly">1</attribute>
+          </xpath>
+
+          <xpath expr="//field[@name='activity_ids']" position="attributes">
+            <attribute name="readonly">1</attribute>
+          </xpath>
+
+      </field>
+    </record>
+
+  </data>
+</odoo>

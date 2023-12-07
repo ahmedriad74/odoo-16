@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="inherit_view_product_tree_add" model="ir.ui.view">
+        <field name="name">inherit_view_product_tree add</field>
+        <field name="model">product.product</field>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <tree string="Products" sample="1" duplicate="false">
+                <!--<field name="image_128" string="Image" readonly="1" widget="image" optional="show" force_save="1" height="20px" width="70px"/>-->
+                <field name="name" readonly="1" optional="show"/>
+                <!-- <field name="product_template_attribute_value_ids" optional="show" widget="many2many_tags" groups="product.group_product_variant" readonly="1"/> -->
+                <field name="lst_price" readonly="1" optional="show"/>
+                <field name="qty_available" readonly="1" optional="show"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <record id="inherit_search_product_tree_add" model="ir.ui.view">
+        <field name="name">inherit_search_product_tree</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="seller_ids"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

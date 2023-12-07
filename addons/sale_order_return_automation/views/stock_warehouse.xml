@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="sale_del_confirm_extended_for_warehouse">
+            <field name="name">stock.warehose.del.extended</field>
+            <field name="model">stock.warehouse</field>
+            <field name="inherit_id" ref = "stock.view_warehouse"/>
+            <field name="priority" eval="20"/>
+            <field name="arch" type="xml">
+                <field name="code" position="after">
+                    <field name= "is_return_set_to_done"/>
+                    <field name= "create_cn" />
+                    <field name= "validate_cn" />
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="return_check_for_qty">
+            <field name="name">stock.return.check.extended</field>
+            <field name="model">stock.return.picking</field>
+            <field name="inherit_id" ref = "stock.view_stock_return_picking_form"/>
+            <field name="arch" type="xml">
+                <field name="quantity" position="after">
+                    <field name= "negative_flag" invisible='1'/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

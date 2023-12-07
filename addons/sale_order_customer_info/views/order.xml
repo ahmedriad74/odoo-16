@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <record id="view_order_form_count_inherit" model="ir.ui.view">
+            <field name="name">view.order.form.count.inheritd</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='partner_details']" position="inside">
+                    <field name="partner_sale_order_count"/>
+                    <field name="partner_tag_ids" widget="many2many_tags" 
+                        options="{'color_field': 'color', 'no_create_edit': True}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

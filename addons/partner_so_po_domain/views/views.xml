@@ -1,0 +1,34 @@
+<odoo>
+    <data>
+        <!-- inhert sale order form view  -->
+        <record id="view_partner_order_form_view" model="ir.ui.view">
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="domain">[('customer_rank','>',0)]</attribute> 
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_partner_po_order_form_view" model="ir.ui.view">
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="domain">[('supplier_rank','>',0)]</attribute> 
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_partner_pr_order_form_view" model="ir.ui.view">
+            <field name="model">purchase.requisition</field>
+            <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vendor_id']" position="attributes">
+                    <attribute name="domain">[('supplier_rank','>',0)]</attribute> 
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

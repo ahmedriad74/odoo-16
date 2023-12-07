@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+        <!-- inhert & edit account journal form view  -->
+        <record id="account_journal_auto_assign_inherit" model="ir.ui.view">
+            <field name="name">account.journal.auto.asign.inheritd</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='bank_account']/group[1]" position="inside">
+                    <group>
+                        <field name='crm_team_id'/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

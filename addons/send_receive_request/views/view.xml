@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_acount_journal_form_inherit" model="ir.ui.view">
+        <field name="name">Journal Form Inheri</field>
+        <field name="model">account.journal</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='country_code']" position="after">
+                <field name="pay_type" attrs="{'invisible':[('type','not in',('cash','bank'))]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_account_document_out_payment" model="ir.actions.act_window">
+        <!-- <field name="type">ir.actions.act_window</field> -->
+        <field name="name">Documents Out</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{ 'default_is_document': True,
+                                'default_payment_type': 'outbound',
+                                'default_partner_type': 'supplier'}
+        </field>
+        <field name="domain">[('is_document','=',True), ('payment_type','=', 'outbound')]</field>
+        <field name="groups_id" eval="[ref('account.group_account_manager')]"/>
+    </record>
+
+    <record id="action_account_document_in_payment" model="ir.actions.act_window">
+        <!-- <field name="type">ir.actions.act_window</field> -->
+        <field name="name">Documents In</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{ 'default_is_document': True,
+                                'default_payment_type': 'inbound',
+                                'default_partner_type': 'customer'}
+        </field>
+        <field name="domain">[('is_document','=',True),('payment_type','=', 'inbound')]</field>
+        <field name="groups_id" eval="[ref('account.group_account_manager')]"/>
+    </record>
+
+    <!-- out -->
+    <record id="view_account_payment_document_out_tree" model="ir.ui.view">
+        <field name="name">account.payment.document.out.tree</field>
+        <field name="model">account.payment</field>
+        <field name="arch" type="xml">
+            <tree decoration-info="state == 'draft'" decoration-muted="state in ['reconciled', 'cancelled']"
+                  edit="false">
+                <field name="name"/>
+                <field name="journal_id"/>
+                <field name="payment_method_id"/>
+                <field name="partner_id" string="Partner"/>
+                <field name="amount" sum="Amount"/>
+                <field name="state"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="partner_type" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <!-- in -->
+    <record id="view_account_payment_document_in_tree" model="ir.ui.view">
+        <field name="name">account.payment.document_in.tree</field>
+        <field name="model">account.payment</field>
+        <field name="arch" type="xml">
+            <tree decoration-info="state == 'draft'" decoration-muted="state in ['reconciled', 'cancelled']"
+                  edit="false">
+                <field name="name"/>
+                <field name="journal_id"/>
+                <field name="payment_method_id"/>
+                <field name="partner_id" string="Partner"/>
+                <field name="amount" sum="Amount"/>
+                <field name="state"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="partner_type" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="account_payment_document_out_inherited_view">
+        <field name="name">account.payment.document.out.inherited.view</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="mode">primary</field>
+        <field name="priority">30</field>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//field[@name='destination_journal_id']" position="replace">
+
+                <field name="destination_account_id" string='account' options="{'no_create': True}"  attrs="{'required': [('post_type', '=', 'single')], 'invisible': [('post_type','!=','single')], 'readonly': ['|', ('state', '!=', 'draft'), ('is_internal_transfer', '=', True)]}"/>
+
+                <!-- <attribute name="attrs">{'required': [('post_type', '=', 'single')],'invisible': [('post_type','!=','single')]}</attribute> -->
+            </xpath>
+            <xpath expr="//field[@name='payment_type']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_document', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_type']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_document', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_bank_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_document', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='is_internal_transfer']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_document', '=', True)]}</attribute>
+            </xpath>
+            <!-- <xpath expr="//field[@name='move_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_document', '=', True)]}</attribute>
+            </xpath> -->
+
+            <xpath expr="//field[@name='partner_id']" position="replace">
+            </xpath>
+            <!-- <xpath expr="//field[@name='destination_account_id']" position="attributes">
+                <attribute name="string">Account</attribute>
+            </xpath> -->
+            <xpath expr="//field[@name='destination_account_id']" position="after">
+                <field name="partne_required" invisible="1"/>
+                <field name="post_type"  attrs="{'invisible': [('payment_type','=','inbound')],'readonly': [('state', '!=', 'draft')]}"/>
+                <field name="partner_id" attrs="{'readonly': [('state', '!=', 'draft')], 'required': [('partne_required','=',True),('post_type','=','single')]}"/>
+                <!-- 'invisible': [('post_type','!=','single')],  -->
+                <field name="is_document" invisible="1"/>
+
+            </xpath>
+
+            <xpath expr="//group[@name='group2']" position="after">
+                <group colspan='12'>
+                    <field name="writeoff_multi_acc_ids" attrs="{'invisible': [('post_type','=','single')], 'readonly': [('state', '!=', 'draft')]}">
+                        <tree editable="bottom">
+                            <field name='writeoff_account_id'/>
+                            <field name="partne_required" invisible="1"/>
+                            <field name="required_analytical" invisible="1"/>
+                            <!-- <field name='writeoff_partner_id' domain="['|', ('parent_id', '=', False), ('is_company', '=', True)]" attrs="{'required': [('partne_required','=',True)]}"/> -->
+                            <field name='name'/>
+                            <field name='analytic_account_id' attrs="{'required': [('required_analytical','=',True)]}"/>
+                            <!-- <field name='analytic_tag_ids' widget='many2many_tags'/> -->
+                            <field name='amount'/>
+                            <field name='currency_id' invisible="1"/>
+                        </tree>
+                    </field>
+                </group>
+
+            </xpath>
+
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="string">Partner</attribute>
+            </xpath>
+
+
+            <xpath expr="//field[@name='journal_id']" position="replace">
+                
+                <field name="journal" invisible='1'/>
+                <field name="journal_id"
+                    widget="selection"
+                    domain="[('pay_type', '=', journal)]"
+                    attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+            </xpath>
+            
+        </field>
+    </record>
+
+    <record id="view_account_account_form_inherited" model="ir.ui.view">
+        <field name="name">view.account.account.form.inherit</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='account_type']" position="after">
+              <field name="is_customer"/>
+              <field name="is_vendor"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="account_payment_document_in_inherited_view">
+        <field name="name">account.payment.document.in.inherited.view</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="mode">primary</field>
+        <field name="priority">30</field>
+        <field name="arch" type="xml">
+            
+
+            <xpath expr="//field[@name='destination_journal_id']" position="replace">
+                <field name="destination_account_id" options="{'no_create': True}"  attrs="{'required': [('post_type', '=', 'single')], 'invisible': [('post_type','!=','single')], 'readonly': ['|', ('state', '!=', 'draft'), ('is_internal_transfer', '=', True)]}"/>
+
+                <!-- <attribute name="attrs">{'required': [('post_type', '=', 'single')],'invisible': [('post_type','!=','single')]}</attribute> -->
+            </xpath>
+            <xpath expr="//field[@name='payment_type']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_document', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_type']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_document', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_bank_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_document', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='is_internal_transfer']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_document', '=', True)]}</attribute>
+            </xpath>
+            <!-- <xpath expr="//field[@name='move_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_document', '=', True)]}</attribute>
+            </xpath> -->
+
+            <xpath expr="//field[@name='partner_id']" position="replace">
+            </xpath>
+            <xpath expr="//field[@name='destination_account_id']" position="attributes">
+                <attribute name="string">Account</attribute>
+            </xpath>
+            <xpath expr="//field[@name='destination_account_id']" position="after">
+                <field name="partne_required" invisible="1"/>
+                <field name="post_type"  attrs="{'invisible': [('payment_type','=','inbound')],'readonly': [('state', '!=', 'draft')]}"/>
+                <field name="partner_id" attrs="{'readonly': [('state', '!=', 'draft')], 'required': [('partne_required','=',True),('post_type','=','single')]}"/>
+                <!-- 'invisible': [('post_type','!=','single')],  -->
+                <field name="is_document" invisible="1"/>
+
+            </xpath>
+
+            <xpath expr="//group[@name='group2']" position="after">
+                <group colspan='12'>
+                    <field name="writeoff_multi_acc_ids" attrs="{'invisible': [('post_type','=','single')], 'readonly': [('state', '!=', 'draft')]}">
+                        <tree editable="bottom">
+                            <field name='writeoff_account_id'/>
+                            <field name="partne_required" invisible="1"/>
+                            <field name="required_analytical" invisible="1"/>
+                            <!-- <field name='writeoff_partner_id' domain="['|', ('parent_id', '=', False), ('is_company', '=', True)]" attrs="{'required': [('partne_required','=',True)]}"/> -->
+                            <field name='name'/>
+                            <field name='analytic_account_id' attrs="{'required': [('required_analytical','=',True)]}"/>
+                            <!-- <field name='analytic_tag_ids' widget='many2many_tags'/> -->
+                            <field name='amount'/>
+                            <field name='currency_id' invisible="1"/>
+                        </tree>
+                    </field>
+                </group>
+
+            </xpath>
+
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="string">Partner</attribute>
+            </xpath>
+
+
+            <xpath expr="//field[@name='journal_id']" position="replace">
+                
+                <field name="journal" invisible='1'/>
+                <field name="journal_id"
+                    widget="selection"
+                    domain="[('pay_type', '=', journal)]"
+                    attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+            </xpath>
+            
+        </field>
+    </record>
+
+    
+    <record model="ir.actions.act_window.view" id="action_document_out_payment_tree">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_account_payment_document_out_tree"/>
+        <field name="act_window_id" ref="action_account_document_out_payment"/>
+    </record> 
+    <record model="ir.actions.act_window.view" id="action_document_in_payment_tree">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_account_payment_document_in_tree"/>
+        <field name="act_window_id" ref="action_account_document_in_payment"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_document_out_payment_form">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="account_payment_document_out_inherited_view"/>
+        <field name="act_window_id" ref="action_account_document_out_payment"/>
+    </record>
+    <record model="ir.actions.act_window.view" id="action_document_in_payment_form">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="account_payment_document_in_inherited_view"/>
+        <field name="act_window_id" ref="action_account_document_in_payment"/>
+    </record>
+
+    <menuitem
+            id="menu_action_account_document_out_payment"
+            action="action_account_document_out_payment"
+            sequence="25"
+            parent="account.menu_finance_payables"/>
+    <menuitem
+            id="menu_action_account_document_in_payment"
+            action="action_account_document_in_payment"
+            sequence="26"
+            parent="account.menu_finance_receivables"/>
+
+    
+    
+
+</odoo>

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="print_transfer_form" model="ir.ui.view">
+        <field name="name">print.transfer.wizard.form</field>
+        <field name="model">print.transfer.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Product Transfer">
+                <group>
+                    <group>
+                        <field name="stock_from_ids" options="{'no_create_edit': True}" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <field name="date_from" widget="daterange" options="{'related_end_date': 'date_to'}"/>
+                        <field name="date_to" widget="daterange" options="{'related_start_date': 'date_from'}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_print_transfer" string="Print" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_print_transfer_wizard" model="ir.actions.act_window">
+        <field name="name">Product Transfer</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">print.transfer.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="print_transfer_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+            id="menu_action_print_transfer_report"
+            name="Product Transfer"
+            action="action_print_transfer_wizard"
+            parent="stock.menu_warehouse_report"/>
+</odoo>

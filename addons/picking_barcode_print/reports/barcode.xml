@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--report-->
+        <template id="picking_report_productlabel">
+            <t t-call="web.html_container">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <t t-foreach="docs" t-as="doc">
+                            <t t-translation="off">
+                                <div style="display: inline-table; width:100%;height: 25mm;">
+                                    <t t-set="lines" t-value="doc.move_line_ids.filtered(lambda l:l.confirm_flag == False)"/>
+                                    <t t-if="len(lines) &lt;= 50">
+                                        <t t-foreach="range(0, len(lines))" t-as="index">
+                                            <t t-set="ml" t-value="lines[index]"/>
+                                            <t t-set="qty" t-value="int(ml.qty_done)"/>
+                                            <t t-foreach="range(qty)" t-as="item">
+                                                <div style="margin-bottom:8px;border:none;padding:0;overflow: hidden;height: 12mm;" class="text-center align-middle">
+                                                    <div style="height: 6px;line-height: 0">
+                                                        <span style="font-size: 8px;">صيدليات الدواء </span>
+                                                        <span style="font-size: 8px;padding-right:10px;">15252</span>
+                                                    </div>
+                                                    <div style="height: 23px;">
+                                                        <t t-if="ml.lot_id.py_barcode">
+                                                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=0' % ('EAN13', ml.lot_id.py_barcode, 600, 150)" style="height:20px;width:90%;" alt="Barcode"/>
+                                                        </t>
+                                                        <t t-elif="ml.product_id.default_code">
+                                                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=0' % ('EAN13', ml.product_id.default_code, 600, 150)" style="height:20px;width:90%;" alt="Barcode"/>
+                                                        </t>
+                                                        <t t-elif="ml.product_id.barcode">
+                                                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=0' % ('EAN13', ml.product_id.barcode, 600, 150)" style="height:20px;width:90%;" alt="Barcode"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <div class="text-muted" style="height: 8px;line-height: 0">No barcode available</div>
+                                                        </t>
+                                                    </div>
+                                                    <div style="height: 16px;line-height: 1;font-size: 6px;overflow: hidden;">
+                                                        <t t-if="ml.lot_id">
+                                                            <t t-if="ml.product_id.categ_id.is_dawaa">
+                                                                <span style="font-size: 9px;" t-esc="ml.lot_id.py_price_unit"/>
+                                                            </t>
+                                                            <span style="font-size: 8px;padding-right:5px;" t-esc="ml.lot_id.expiration_date.date()"/>
+                                                            <span style="font-size: 9px;padding-right:5px;" t-esc="ml.product_id.default_code"/>
+                                                            <br/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <t t-if="ml.product_id.categ_id.is_dawaa">
+                                                                <span style="font-size: 9px;" t-esc="ml.product_id.list_price"/>
+                                                            </t>
+                                                            <span style="font-size: 9px;padding-right:5px;" t-esc="ml.product_id.default_code"/>
+                                                            <br/>
+                                                        </t>
+                                                        <span style="font-size: 8px;" t-esc="ml.product_id.name"/>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </t>
+                                    </t>
+                                    <t t-elif="(len(lines) &gt; 50) and (doc.start_line_print == 0)">
+                                        <t t-foreach="range(doc.start_line_print, 50)" t-as="index">
+                                            <t t-set="ml" t-value="lines[index]"/>
+                                            <t t-set="qty" t-value="int(ml.qty_done)"/>
+                                            <t t-foreach="range(qty)" t-as="item">
+                                                <div style="margin-bottom:8px;border:none;padding:0;overflow: hidden;height: 12mm;" class="text-center align-middle">
+                                                    <div style="height: 6px;line-height: 0">
+                                                        <span style="font-size: 8px;">صيدليات الدواء </span>
+                                                        <span style="font-size: 8px;padding-right:10px;">15252</span>
+                                                    </div>
+                                                    <div style="height: 23px;">
+                                                        <t t-if="ml.lot_id.py_barcode">
+                                                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=0' % ('EAN13', ml.lot_id.py_barcode, 600, 150)" style="height:20px;width:90%;" alt="Barcode"/>
+                                                        </t>
+                                                        <t t-elif="ml.product_id.default_code">
+                                                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=0' % ('EAN13', ml.product_id.default_code, 600, 150)" style="height:20px;width:90%;" alt="Barcode"/>
+                                                        </t>
+                                                        <t t-elif="ml.product_id.barcode">
+                                                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=0' % ('EAN13', ml.product_id.barcode, 600, 150)" style="height:20px;width:90%;" alt="Barcode"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <div class="text-muted" style="height: 8px;line-height: 0">No barcode available</div>
+                                                        </t>
+                                                    </div>
+                                                    <div style="height: 16px;line-height: 1;font-size: 6px;overflow: hidden;">
+                                                        <t t-if="ml.lot_id">
+                                                            <t t-if="ml.product_id.categ_id.is_dawaa">
+                                                                <span style="font-size: 9px;" t-esc="ml.lot_id.py_price_unit"/>
+                                                            </t>
+                                                            <span style="font-size: 8px;padding-right:5px;" t-esc="ml.lot_id.expiration_date.date()"/>
+                                                            <span style="font-size: 9px;padding-right:5px;" t-esc="ml.product_id.default_code"/>
+                                                            <br/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <t t-if="ml.product_id.categ_id.is_dawaa">
+                                                                <span style="font-size: 9px;" t-esc="ml.product_id.list_price"/>
+                                                            </t>
+                                                            <span style="font-size: 9px;padding-right:5px;" t-esc="ml.product_id.default_code"/>
+                                                            <br/>
+                                                        </t>
+                                                        <span style="font-size: 8px;" t-esc="ml.product_id.name"/>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </t>
+                                    </t>
+                                    <t t-elif="(len(lines) &gt; 50) and (doc.start_line_print &lt; len(lines))">
+                                        <t t-foreach="range(doc.start_line_print, len(lines))" t-as="index">
+                                            <t t-set="ml" t-value="lines[index]"/>
+                                            <t t-set="qty" t-value="int(ml.qty_done)"/>
+                                            <t t-foreach="range(qty)" t-as="item">
+                                                <div style="margin-bottom:8px;border:none;padding:0;overflow: hidden;height: 12mm;" class="text-center align-middle">
+                                                    <div style="height: 6px;line-height: 0">
+                                                        <span style="font-size: 8px;">صيدليات الدواء </span>
+                                                        <span style="font-size: 8px;padding-right:10px;">15252</span>
+                                                    </div>
+                                                    <div style="height: 23px;">
+                                                        <t t-if="ml.lot_id.py_barcode">
+                                                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=0' % ('EAN13', ml.lot_id.py_barcode, 600, 150)" style="height:20px;width:90%;" alt="Barcode"/>
+                                                        </t>
+                                                        <t t-elif="ml.product_id.default_code">
+                                                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=0' % ('EAN13', ml.product_id.default_code, 600, 150)" style="height:20px;width:90%;" alt="Barcode"/>
+                                                        </t>
+                                                        <t t-elif="ml.product_id.barcode">
+                                                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=0' % ('EAN13', ml.product_id.barcode, 600, 150)" style="height:20px;width:90%;" alt="Barcode"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <div class="text-muted" style="height: 8px;line-height: 0">No barcode available</div>
+                                                        </t>
+                                                    </div>
+                                                    <div style="height: 16px;line-height: 1;font-size: 6px;overflow: hidden;">
+                                                        <t t-if="ml.lot_id">
+                                                            <t t-if="ml.product_id.categ_id.is_dawaa">
+                                                                <span style="font-size: 9px;" t-esc="ml.lot_id.py_price_unit"/>
+                                                            </t>
+                                                            <span style="font-size: 8px;padding-right:5px;" t-esc="ml.lot_id.expiration_date.date()"/>
+                                                            <span style="font-size: 9px;padding-right:5px;" t-esc="ml.product_id.default_code"/>
+                                                            <br/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <t t-if="ml.product_id.categ_id.is_dawaa">
+                                                                <span style="font-size: 9px;" t-esc="ml.product_id.list_price"/>
+                                                            </t>
+                                                            <span style="font-size: 9px;padding-right:5px;" t-esc="ml.product_id.default_code"/>
+                                                            <br/>
+                                                        </t>
+                                                        <span style="font-size: 8px;" t-esc="ml.product_id.name"/>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </div>
+                            </t>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </template>
+        
+        <record id="picking_report_product_label" model="ir.actions.report">
+            <field name="name">Barcodes Label</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">picking_barcode_print.picking_report_productlabel</field>
+            <field name="report_file">picking_barcode_print.picking_report_productlabel</field>
+            <field name="print_report_name">'Products %s' % (object.name)</field>
+            <field name="paperformat_id" ref="lot_management.paperformat_barcode_barcode"/>
+            <field name="binding_model_id" ref="stock.model_stock_picking"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

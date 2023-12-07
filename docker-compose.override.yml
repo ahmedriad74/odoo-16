@@ -1,0 +1,24 @@
+version: '2'
+services:
+  web:
+    ports:
+      - 8069:8069
+      - 8072:8072
+    volumes:
+      - ./config/odoo.dev.conf:/etc/odoo/odoo.conf
+      - ./enterprise:/mnt/enterprise
+  pgadmin:
+    image: dpage/pgadmin4:7.7
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=ahriad2@yahoo.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    ports:
+      - 8070:80
+#in pgadmin create new server with any name in connection add name of service(postgres) in docker-compose which is db
+# and  in user and password add also odoo, odoo as in docker-compose
+volumes:  
+  pgadmin-data:
+

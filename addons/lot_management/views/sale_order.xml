@@ -1,0 +1,53 @@
+<odoo>
+    <data>
+        <!-- inhert sale form view  -->
+        <record id="view_order_form_expiration" model="ir.ui.view">
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree" position="attributes">
+                    <attribute name="class" separator=" " add="line_tree_o2m" />
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('product_updatable', '=', False)],'required': [('display_type', '=', False)]}</attribute>
+                    <attribute name="force_save">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
+                    <field name="py_search_lot_product"/>
+                    <field name="py_available_lot_ids" invisible="1"/>
+                    <field name="py_lot_id"
+                    attrs="{
+                            'readonly': [('product_updatable', '=', False)]
+                        }"
+                        options="{'no_open': True, 'no_create': True, 'no_create_edit': True}"
+                        force_save="1"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="after">
+                    <field name="py_location_product_all_qty_text" string="Available"/>
+                    <field name="py_location_product_lot_qty_text" string="Ex. Date"/>
+                    <field name="price_unit" attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
+                    <field name="py_box_product_uom_qty" string="Quantity"/>
+                    <field name="py_strip_product_uom_qty" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_order_tree_ow" model="ir.ui.view">
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,166 @@
+<odoo>
+    <data>
+        <record id="net_sales_view_employee_form_inherit" model="ir.ui.view">
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@id='o_work_employee_container']//group[1]" position="inside">
+                    <field name='public_target' />
+                    <field name='unpublic_target' />
+                    <field name='lab_target' />
+                    <field name='cosmo_target' />
+                    <field name='chronic_target' />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="net_sales_hr_price_view_employee_form_inherit" model="ir.ui.view">
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='hr_settings']//group[@name='identification_group']" position="after">
+                    <group name="employee_hours">
+                        <field name='hour_price'/>
+                        <field name='incentive_hour'/>
+                        <field name="mobile_bills"/>
+                        <field name='transportation'/>
+                        <field name="insurance"/>
+                        <field name="taxes"/>
+                        <!-- <field name="final_incentive_percent"/> -->
+                        <!-- <field name='transportation'/>
+                        <field name='management_allowance'/>
+                        <field name='payments'/>
+                        <field name='withdrawals'/> -->
+                    </group>
+                </xpath>
+                <xpath expr="//page[@name='hr_settings']//group[@name='identification_group']" position="inside">
+                    <field name='payment_date'/>
+                    <field name='payment_qty'/>
+                    <field name='payment_period'/>
+                    <field name='payment_installment'/>
+                </xpath>
+                <xpath expr="//page[@name='hr_settings']//group[@name='employee_hours']" position="after">
+                    <group string="Vacancy" name="vacancy">
+                        <field name="has_vacancy"/>
+                        <field name="regular_vacation" attrs="{'invisible': [('has_vacancy', '=', False)]}"/>
+                        <field name="casual_vacation" attrs="{'invisible': [('has_vacancy', '=', False)]}"/>
+                        <label for="total_vacancy_days" attrs="{'invisible': [('has_vacancy', '=', False)]}"/>
+                        <div class="o_row" attrs="{'invisible': [('has_vacancy', '=', False)]}">
+                            <field name="total_vacancy_days"/>
+                            <button name="reset_vacancy" type="object"
+                                string=" Reset Vacancy"
+                                class="btn-link mb-1 px-0" icon="fa-refresh"/>
+                        </div>
+                        <field name="reamin_vacancy_days"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_employee_info_tree" model="ir.ui.view">
+            <field name="name">hr.employee.tree</field>
+            <field name="model">hr.employee</field>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <tree string="Employees" editable="bottom" multi_edit="1" sample="1">
+                    <header>
+                        <button name="clear_fields" string="Clear" type="object" class="oe_highlight"/>
+                        <button name="reset_vacancy" string="Reset Vacancy" type="object" class="oe_highlight"/>
+                    </header>
+                    <field name="name" readonly="1"/>
+                    <field name='hour_price' readonly="1"/>
+                    <field name="incentive_hour" readonly="1"/>
+                    <field name="mobile_bills" readonly="1"/>
+                    <field name="transportation" readonly="1"/>
+                    <field name="payment_qty" readonly="1"/>
+                    <field name="taxes" readonly="1"/>
+                    <field name="insurance" readonly="1"/>
+                    <field name="final_incentive_percent"/>
+                    <field name="work_hrs"/>
+                    <field name="extra_hrs"/>
+                    <field name="rewards"/>
+                    <field name="bouns"/>
+                    <field name="commission"/>
+                    <field name="allowances"/>
+                    <field name="management_allowance"/>
+                    <field name="inability"/>
+                    <field name="withdrawals"/>
+                    <field name="indebtedness" optional='hide'/>
+                    <field name="subtraction" optional='hide'/>
+                    <field name="mistakes" optional='hide'/>
+                    <field name="deductions" optional='hide'/>
+                    <field name="penalty" optional='hide'/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_employee_info_view_search" model="ir.ui.view">
+            <field name="name">hr.employee.info.view.search</field>
+            <field name="model">hr.employee</field>
+            <field name="arch" type="xml">
+                <search string="Employees">
+                    <field name="name" string="Employee" filter_domain="['|', ('work_email', 'ilike', self), ('name', 'ilike', self)]"/>
+                    <field name="category_ids" groups="hr.group_hr_user"/>
+                    <field name="job_id"/>
+                    <separator/>
+                    <filter string="Unread Messages" name="message_needaction" domain="[('message_needaction', '=', True)]"/>
+                    <separator/>
+                    <filter invisible="1" string="Late Activities" name="activities_overdue"
+                        domain="[('my_activity_date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
+                    <filter invisible="1" string="Today Activities" name="activities_today"
+                        domain="[('my_activity_date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                    <filter invisible="1" string="Future Activities" name="activities_upcoming_all"
+                        domain="[('my_activity_date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
+                    <separator/>
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_manager" string="Manager" domain="[]" context="{'group_by': 'parent_id'}"/>
+                        <filter name="group_department" string="Department" domain="[]" context="{'group_by': 'department_id'}"/>
+                        <filter name="group_job" string="Job" domain="[]" context="{'group_by': 'job_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_view_employee_info" model="ir.actions.act_window">
+            <field name="name">Employees Info</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="hr_employee_info_view_search"/>
+        </record>
+
+        <record id="act_window_view_employee_info_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_employee_info_tree"/>
+            <field name="act_window_id" ref="action_view_employee_info"/>
+        </record>
+
+        <record id="view_employee_info_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="hr.view_employee_form"/>
+            <field name="act_window_id" ref="action_view_employee_info"/>
+        </record>
+
+        <menuitem id="employee_info_menu"
+              name="Employee Info"
+              action="action_view_employee_info"
+              parent="hr.menu_hr_employee_payroll"
+              sequence="2"/>
+
+        <!-- wizard menu -->
+        <!-- <menuitem id="upload_hours_sheet_menu" 
+              name="Upload Hours Sheet" 
+              parent="hr.menu_hr_employee_payroll" 
+              action="action_upload_workhrs_sheet_wizard" 
+              sequence="3"/> -->
+
+        <menuitem id="upload_employee_data_menu" 
+              name="Upload Employee Data Sheet" 
+              parent="hr.menu_hr_employee_payroll" 
+              action="action_upload_workhrs_sheet_wizard" 
+              sequence="3"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,133 @@
+<odoo>
+    <data>
+        <!-- inhert payment form view -->
+        <record id="view_account_payment_form_remove_un" model="ir.ui.view">
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_draft']" position="attributes">
+                    <attribute name="groups">account.group_account_manager</attribute>
+                </xpath>
+            </field>
+        </record>        
+
+        <!-- inhert account form view -->
+        <record id="view_move_form_remove_un" model="ir.ui.view">
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">false</attribute>
+                    <!-- <attribute name="edit">false</attribute> -->
+                </xpath>
+                <xpath expr="//button[@name='action_invoice_sent'][2]" position="attributes">
+                    <attribute name="groups">account.group_account_manager</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_invoice_sent'][1]" position="attributes">
+                    <attribute name="groups">account.group_account_manager</attribute>
+                </xpath>
+                <xpath expr="//button[@name='preview_invoice']" position="attributes">
+                    <attribute name="groups">account.group_account_manager</attribute>
+                </xpath>
+                <!-- HOLD -->
+                <!-- <xpath expr="//button[@name='%(account.action_view_account_move_reversal)d']" position="attributes">
+                    <attribute name="groups">account.group_account_manager,hide_sale_price.group_show_journal_items</attribute>
+                </xpath> -->
+                <xpath expr="//button[@name='action_reverse']" position="attributes">
+                    <attribute name="groups">account.group_account_manager</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_cancel']" position="attributes">
+                    <attribute name="groups">account.group_account_manager</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_draft']" position="attributes">
+                    <attribute name="groups">account.group_account_manager,hide_sale_price.group_show_journal_items</attribute>
+                </xpath>
+                <xpath expr="//div[@name='journal_div']" position="after">
+                    <field name="invoice_origin" string="Source Document"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- HOLD -->
+        <!-- <record id="view_move_form_admin_create" model="ir.ui.view">
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="groups_id" eval="[(4, ref('account.group_account_manager'))]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">true</attribute>
+                </xpath>
+            </field>
+        </record> -->
+
+        <!-- inhert account tree view  -->
+        <record id="view_invoice_tree_un" model="ir.ui.view">
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_invoice_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_register_payment']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_invoice_tree_admin_create" model="ir.ui.view">
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_in_invoice_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">true</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- inhert account kanaban view  -->
+        <record id="view_account_move_kanban_un" model="ir.ui.view">
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_account_move_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
+            </field>
+        </record>
+        <!-- inhert account kanaban view -->
+        <record id="view_account_move_kanban_cr" model="ir.ui.view">
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_account_move_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='amount_total']" position="replace">
+                    <field name="amount_total_signed"/>
+                </xpath>
+                <xpath expr="//templates//field[@name='state']" position="replace">
+                    <field name="move_type" widget="label_selection" options="{'classes': {'out_inovice': 'success', 'in_inovice': 'success', 'out_refund': 'danger', 'in_refund': 'danger'}}"/>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.actions.server" id="account.action_move_switch_invoice_to_credit_note">
+            <field name="groups_id" eval="[ref('account.group_account_manager')]"/>
+        </record>
+        <record model="ir.actions.server" id="account.action_account_invoice_from_list">
+            <field name="groups_id" eval="[ref('account.group_account_manager')]"/>
+        </record>
+        <!-- upgrade16 ==> 'payment' -> 'account_payment' -->
+        <record model="ir.actions.act_window" id="account_payment.action_invoice_order_generate_link">
+            <field name="groups_id" eval="[ref('account.group_account_manager')]"/>
+        </record>
+        <record model="ir.actions.act_window" id="account.action_view_account_move_reversal">
+            <field name="groups_id" eval="[ref('account.group_account_manager')]"/>
+        </record>
+        <record model="ir.actions.act_window" id="account.action_validate_account_move">
+            <field name="groups_id" eval="[ref('account.group_account_manager')]"/>
+        </record>
+        <!-- upgrade16 ==> this action becomes 'server' in V16 -->
+        <record model="ir.actions.server" id="account.invoice_send">
+            <field name="groups_id" eval="[ref('account.group_account_manager')]"/>
+        </record>
+        <record model="ir.actions.act_window" id="account.action_account_resequence">
+            <field name="groups_id" eval="[ref('account.group_account_manager')]"/>
+        </record>
+    </data>
+</odoo>

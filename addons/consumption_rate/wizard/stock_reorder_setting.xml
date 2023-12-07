@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_stock_reorder_setting_wizard" model="ir.ui.view">
+            <field name="name">Stock Reorder Setting Form</field>
+            <field name="model">stock.reorder.setting</field>
+            <field name="arch" type="xml">
+                <form string="Parameters">
+                    <group>
+                        <group>
+                            <field name="company_id" invisible="1"/>
+                            <field name="days_before"/>
+                        </group>
+                        <group>
+                            <field name="product_min_duration_branch"/>
+                            <field name="product_max_duration_branch"/>
+                            <field name="product_min_duration_main"/>
+                            <field name="product_max_duration_main"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="except_levela_ids" widget="many2many_tags"  options="{'no_create':True, 'no_create_edit': True, 'no_open': True}"/>
+                    </group>
+                    <group>
+                        <field name="day_location_ids" mode="tree">
+                            <tree editable="bottom">
+                                <field name="company_id" invisible="1"/>
+                                <field name="day_name"/>
+                                <field name="location_ids" widget="many2many_tags" options="{'no_create':True, 'no_create_edit': True, 'no_open': True}"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button name="save_setting" string="Save" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="action_reorder_setting" model="ir.actions.act_window">
+            <field name="name">Stock Reorder Setting</field>
+            <field name="res_model">stock.reorder.setting</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        
+        <menuitem id="menu_reorder_setting_parent" name="Reorder" parent="purchase.menu_purchase_config" sequence="35"/>
+        <menuitem action="action_reorder_setting" id="menu_reorder_setting" parent="menu_reorder_setting_parent" sequence="1"/>
+    </data>
+</odoo>

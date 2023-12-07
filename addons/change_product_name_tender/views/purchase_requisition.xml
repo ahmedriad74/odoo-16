@@ -1,0 +1,7 @@
+<odoo>
+    <data>
+        <record id="purchase_requisition.action_purchase_requisition" model="ir.actions.act_window">
+            <field name="context">{'tender_view': True}</field>
+        </record>
+    </data>
+</odoo>
