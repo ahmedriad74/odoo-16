@@ -6,7 +6,9 @@ from odoo import models, _
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
+
     def action_import_products(self):
+    
         view = self.env.ref('dawaa_import_products.view_import_products_wizard')
 
         return {
